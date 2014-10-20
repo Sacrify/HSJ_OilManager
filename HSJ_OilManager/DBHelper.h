@@ -20,6 +20,7 @@ typedef CMap<int, int, CompanyTypeModal, CompanyTypeModal> CompanyTypeMap;
 typedef CMap<int, int, CompanyModal, CompanyModal> CompanyMap;
 
 typedef CMap<int, int, OilTypeModal, OilTypeModal> OilTypeMap;
+typedef CMap<int, int, OilDensityModal, OilDensityModal> OilDensityMap;
 
 class DBHelper
 {
@@ -34,6 +35,7 @@ private:
 	CompanyMap* m_CompanyMap;
 
 	OilTypeMap* m_OilTypeMap;
+	OilDensityMap* m_OilDensityMap;
 
 public:
 	~DBHelper(void);
@@ -50,6 +52,6 @@ public:
 	void ReloadCompanyMap();
 
 	void ReloadOilTypeMap();
-
+	void ReloadOilDensityMap();
 
 };

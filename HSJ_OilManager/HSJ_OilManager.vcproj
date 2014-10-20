@@ -302,6 +302,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OilPriceModal.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OilPriceModal.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OilTypeModal.cpp"
 				>
 			</File>

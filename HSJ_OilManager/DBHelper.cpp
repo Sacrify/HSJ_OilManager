@@ -12,6 +12,7 @@ DBHelper::DBHelper(void)
 	m_CompanyMap = new CompanyMap();
 
 	m_OilTypeMap = new OilTypeMap();
+	m_OilDensityMap = new OilDensityMap();
 }
 
 DBHelper::~DBHelper(void)
@@ -43,6 +44,12 @@ DBHelper::~DBHelper(void)
 	{
 		delete m_OilTypeMap;
 		m_OilTypeMap = NULL;
+	}
+
+	if (m_OilDensityMap)
+	{
+		delete m_OilDensityMap;
+		m_OilDensityMap = NULL;
 	}
 }
 
@@ -133,6 +140,7 @@ void DBHelper::ReloadAll()
 	ReloadCompanyMap();
 
 	ReloadOilTypeMap();
+	ReloadOilDensityMap();
 }
 
 void DBHelper::ReloadCompanyTypeMap()
@@ -278,5 +286,57 @@ void DBHelper::ReloadOilTypeMap()
 	}
 
 	m_pRecordset->Close();
+}
 
+void DBHelper::ReloadOilDensityMap()
+{
+	if (OpenDB() == false) return;
+
+	try
+	{
+		_variant_t RecordsAffected; 
+		m_pRecordset = m_pConnection->Execute(
+			"SELECT OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter " \
+			"FROM hsj_oil_density",
+			&RecordsAffected,
+			adCmdText);
+	}
+	catch (_com_error &e)  
+	{  
+		AfxMessageBox(e.Description());
+		return;
+	}
+
+	if (m_OilDensityMap) m_OilDensityMap->RemoveAll();
+
+	while (!m_pRecordset->ADOEOF)
+	{
+		_variant_t OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter;
+
+		try
+		{
+			OilDensityID = m_pRecordset->GetCollect("OilDensityID");
+			CompanyID = m_pRecordset->GetCollect("CompanyID");
+			OilTypeID = m_pRecordset->GetCollect("OilTypeID");
+			OilDensitySummer = m_pRecordset->GetCollect("OilDensitySummer");
+			OilDensityWinter = m_pRecordset->GetCollect("OilDensityWinter");
+
+			OilDensityModal odm;
+			odm.m_OilDensityID = OilDensityID.intVal;
+			odm.m_CompanyID = CompanyID.intVal;
+			odm.m_OilTypeID = OilTypeID.intVal;
+			odm.m_OilDensitySummer = OilDensitySummer.fltVal;
+			odm.m_OilDensityWinter = OilDensityWinter.fltVal;
+
+			m_OilDensityMap->SetAt(odm.m_OilDensityID, odm);
+		}
+		catch (_com_error &e)  
+		{  
+			AfxMessageBox(e.Description());
+		}
+
+		m_pRecordset->MoveNext();
+	}
+
+	m_pRecordset->Close();
 }
