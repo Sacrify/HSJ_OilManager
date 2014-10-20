@@ -8,6 +8,7 @@
 
 DBHelper::DBHelper(void)
 {
+	m_CompanyTypeMap = new CompanyTypeMap();
 	m_CompanyMap = new CompanyMap();
 }
 
@@ -22,6 +23,12 @@ DBHelper::~DBHelper(void)
 
 		m_pConnection.Release();
 		m_pConnection = NULL;
+	}
+
+	if (m_CompanyTypeMap)
+	{
+		delete m_CompanyTypeMap;
+		m_CompanyTypeMap = NULL;
 	}
 
 	if (m_CompanyMap)
@@ -115,6 +122,53 @@ bool DBHelper::OpenDB()
 void DBHelper::ReloadAll()
 {
 	ReloadCompanyMap();
+}
+
+void DBHelper::ReloadCompanyTypeMap()
+{
+	if (OpenDB() == false) return;
+
+	try
+	{
+		_variant_t RecordsAffected; 
+		m_pRecordset = m_pConnection->Execute(
+			"SELECT CompanyTypeID, CompanyTypeName " \
+			"FROM hsj_company_type",
+			&RecordsAffected,
+			adCmdText);
+	}
+	catch (_com_error &e)  
+	{  
+		AfxMessageBox(e.Description());
+		return;
+	}
+
+	if (m_CompanyTypeMap) m_CompanyTypeMap->RemoveAll();
+
+	while (!m_pRecordset->ADOEOF)
+	{
+		_variant_t CompanyTypeID, CompanyTypeName;
+
+		try
+		{
+			CompanyTypeID = m_pRecordset->GetCollect("CompanyTypeID");
+			CompanyTypeName = m_pRecordset->GetCollect("CompanyTypeName");
+
+			CompanyTypeModal ctm;
+			ctm.m_CompanyTypeID = CompanyTypeID.intVal;
+			ctm.m_CompanyTypeName = CompanyTypeName.bstrVal;
+
+			m_CompanyTypeMap->SetAt(ctm.m_CompanyTypeID, ctm);
+		}
+		catch (_com_error &e)  
+		{  
+			AfxMessageBox(e.Description());
+		}
+
+		m_pRecordset->MoveNext();
+	}
+
+	m_pRecordset->Close();
 }
 
 void DBHelper::ReloadCompanyMap()

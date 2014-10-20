@@ -16,6 +16,7 @@
 #include "UserTypeModal.h"
 #include "ShipRegInfoModal.h"
 
+typedef CMap<int, int, CompanyTypeModal, CompanyTypeModal> CompanyTypeMap;
 typedef CMap<int, int, CompanyModal, CompanyModal> CompanyMap;
 
 class DBHelper
@@ -27,6 +28,7 @@ private:
 	_ConnectionPtr m_pConnection; 
 	_RecordsetPtr m_pRecordset;
 
+	CompanyTypeMap* m_CompanyTypeMap;
 	CompanyMap* m_CompanyMap;
 
 public:
@@ -39,6 +41,7 @@ public:
 	bool OpenDB();
 
 	void ReloadAll();
+	void ReloadCompanyTypeMap();
 	void ReloadCompanyMap();
 
 
