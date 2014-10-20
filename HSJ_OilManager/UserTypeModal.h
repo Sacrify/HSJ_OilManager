@@ -9,5 +9,5 @@ public:
 	virtual ~UserTypeModal(void);
 
 	int m_UserTypeID;
-	TCHAR m_UseTypeComments[DEF_STR_SIZE];
+	CString m_UseTypeComments;
 };

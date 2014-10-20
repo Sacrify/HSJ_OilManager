@@ -3,8 +3,8 @@
 
 UserTypeModal::UserTypeModal(void)
 : m_UserTypeID(0)
+, m_UseTypeComments("")
 {
-	memset(m_UseTypeComments, 0, sizeof(m_UseTypeComments));
 }
 
 UserTypeModal::~UserTypeModal(void)

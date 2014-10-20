@@ -9,5 +9,5 @@ public:
 	virtual ~OilTypeModal(void);
 
 	int m_OilTypeID;
-	TCHAR m_OilTypeComments[DEF_STR_SIZE];
+	CString m_OilTypeComments;
 };

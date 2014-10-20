@@ -9,5 +9,5 @@ public:
 	virtual ~CompanyTypeModal(void);
 
 	int m_CompanyTypeID;
-	TCHAR m_CompanyTypeName[DEF_STR_SIZE];
+	CString m_CompanyTypeName;
 };

@@ -9,5 +9,5 @@ public:
 	virtual ~UserStateModal(void);
 
 	int m_StateID;
-	TCHAR m_StateComments[DEF_STR_SIZE];
+	CString m_StateComments;
 };

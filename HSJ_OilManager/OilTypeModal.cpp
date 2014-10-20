@@ -3,8 +3,8 @@
 
 OilTypeModal::OilTypeModal(void)
 : m_OilTypeID(0)
+, m_OilTypeComments("")
 {
-	memset(m_OilTypeComments, 0, sizeof(m_OilTypeComments));
 }
 
 OilTypeModal::~OilTypeModal(void)

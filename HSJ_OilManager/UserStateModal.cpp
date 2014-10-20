@@ -3,8 +3,8 @@
 
 UserStateModal::UserStateModal(void)
 : m_StateID(0)
+, m_StateComments("")
 {
-	memset(m_StateComments, 0, sizeof(m_StateComments));
 }
 
 UserStateModal::~UserStateModal(void)

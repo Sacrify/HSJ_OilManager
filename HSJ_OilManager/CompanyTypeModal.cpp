@@ -3,8 +3,8 @@
 
 CompanyTypeModal::CompanyTypeModal(void)
 : m_CompanyTypeID(0)
+, m_CompanyTypeName("")
 {
-	memset(m_CompanyTypeName, 0, sizeof(m_CompanyTypeName));
 }
 
 CompanyTypeModal::~CompanyTypeModal(void)

@@ -51,5 +51,3 @@
 #endif
 #endif
 
-
-#define DEF_STR_SIZE 101
