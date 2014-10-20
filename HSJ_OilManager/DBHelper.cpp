@@ -10,6 +10,8 @@ DBHelper::DBHelper(void)
 {
 	m_CompanyTypeMap = new CompanyTypeMap();
 	m_CompanyMap = new CompanyMap();
+
+	m_OilTypeMap = new OilTypeMap();
 }
 
 DBHelper::~DBHelper(void)
@@ -35,6 +37,12 @@ DBHelper::~DBHelper(void)
 	{
 		delete m_CompanyMap;
 		m_CompanyMap = NULL;
+	}
+
+	if (m_OilTypeMap)
+	{
+		delete m_OilTypeMap;
+		m_OilTypeMap = NULL;
 	}
 }
 
@@ -121,7 +129,10 @@ bool DBHelper::OpenDB()
 
 void DBHelper::ReloadAll()
 {
+	ReloadCompanyTypeMap();
 	ReloadCompanyMap();
+
+	ReloadOilTypeMap();
 }
 
 void DBHelper::ReloadCompanyTypeMap()
@@ -220,4 +231,52 @@ void DBHelper::ReloadCompanyMap()
 	}
 
 	m_pRecordset->Close();
+}
+
+void DBHelper::ReloadOilTypeMap()
+{
+	if (OpenDB() == false) return;
+
+	try
+	{
+		_variant_t RecordsAffected; 
+		m_pRecordset = m_pConnection->Execute(
+			"SELECT OilTypeID, OilTypeComments " \
+			"FROM hsj_oil_type",
+			&RecordsAffected,
+			adCmdText);
+	}
+	catch (_com_error &e)  
+	{  
+		AfxMessageBox(e.Description());
+		return;
+	}
+
+	if (m_OilTypeMap) m_OilTypeMap->RemoveAll();
+
+	while (!m_pRecordset->ADOEOF)
+	{
+		_variant_t OilTypeID, OilTypeComments;
+
+		try
+		{
+			OilTypeID = m_pRecordset->GetCollect("OilTypeID");
+			OilTypeComments = m_pRecordset->GetCollect("OilTypeComments");
+
+			OilTypeModal otm;
+			otm.m_OilTypeID = OilTypeID.intVal;
+			otm.m_OilTypeComments = OilTypeComments.bstrVal;
+
+			m_OilTypeMap->SetAt(otm.m_OilTypeID, otm);
+		}
+		catch (_com_error &e)  
+		{  
+			AfxMessageBox(e.Description());
+		}
+
+		m_pRecordset->MoveNext();
+	}
+
+	m_pRecordset->Close();
+
 }
