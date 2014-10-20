@@ -278,14 +278,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CompanyDensityModal.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CompanyDensityModal.h"
-				>
-			</File>
-			<File
 				RelativePath=".\CompanyModal.cpp"
 				>
 			</File>
@@ -299,6 +291,14 @@
 			</File>
 			<File
 				RelativePath=".\CompanyTypeModal.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OilDensityModal.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OilDensityModal.h"
 				>
 			</File>
 			<File

@@ -7,7 +7,7 @@
 #include <afxtempl.h>
 
 #include "BaseModal.h"
-#include "CompanyDensityModal.h"
+#include "OilDensityModal.h"
 #include "CompanyModal.h"
 #include "CompanyTypeModal.h"
 #include "OilTypeModal.h"

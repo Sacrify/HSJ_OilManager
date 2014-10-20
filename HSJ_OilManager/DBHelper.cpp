@@ -95,7 +95,7 @@ bool DBHelper::OpenDB()
 					"Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=OilDB;Data Source=.",
 					"",
 					"",
-					adModeReadWrite)));///连接数据库
+					adModeUnknown)));///连接数据库
 			}
 			catch (_com_error &e)  
 			{  
