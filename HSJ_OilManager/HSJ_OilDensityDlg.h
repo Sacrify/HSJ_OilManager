@@ -29,7 +29,10 @@ public:
 	CComboBox m_OilTypeCombo;
 	CStatic m_CompanyNameLabel;
 	CStatic m_OilTypeLabel;
+	CStatic m_LoadStatus;
 
 	afx_msg void OnBnClickedDensityLoadBtn();
 	afx_msg void OnCbnSelchangeDensityCompanyIdCombo();
+	afx_msg void OnCbnSelchangeDensityOilTypeCombo();
+	void RefreshOilDensityListCtrl();
 };

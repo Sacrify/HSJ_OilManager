@@ -28,12 +28,14 @@ void HSJ_OilDensityDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_OIL_TYPE_COMBO, m_OilTypeCombo);
 	DDX_Control(pDX, IDC_COMPANY_NAME_CONTENT_LABEL, m_CompanyNameLabel);
 	DDX_Control(pDX, IDC_OIL_TYPE_CONTENT_LABEL, m_OilTypeLabel);
+	DDX_Control(pDX, IDC_DENSITY_LOAD_STATUS_LABEL, m_LoadStatus);
 }
 
 
 BEGIN_MESSAGE_MAP(HSJ_OilDensityDlg, CDialog)
 	ON_BN_CLICKED(IDC_DENSITY_LOAD_BTN, &HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn)
 	ON_CBN_SELCHANGE(IDC_DENSITY_COMPANY_ID_COMBO, &HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo)
+	ON_CBN_SELCHANGE(IDC_DENSITY_OIL_TYPE_COMBO, &HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo)
 END_MESSAGE_MAP()
 
 
@@ -64,7 +66,7 @@ void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
 		POSITION pos = companyMap->GetStartPosition();
 		while (pos != NULL)
 		{
-			int key;
+			int key = 0;
 			CompanyModal cm;
 			companyMap->GetNextAssoc(pos, key, cm);
 
@@ -72,6 +74,73 @@ void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
 			str.Format(_T("%d"), key);
 
 			m_CompanyIDCombo.AddString(str);
+		}
+	}
+
+	if (m_OilTypeCombo)
+	{
+		OilTypeMap* oilTypeMap = DBHelper::GetInstance()->GetOilTypeMap();
+
+		POSITION pos = oilTypeMap->GetStartPosition();
+		while (pos != NULL)
+		{
+			int key = 0;
+			OilTypeModal om;
+			oilTypeMap->GetNextAssoc(pos, key, om);
+
+			CString str;
+			str.Format(_T("%d"), key);
+
+			m_OilTypeCombo.AddString(str);
+		}
+	}
+
+
+
+	m_LoadStatus.SetWindowTextW(_T("ря╪сть"));
+}
+
+void HSJ_OilDensityDlg::RefreshOilDensityListCtrl()
+{
+	if (m_OilDensityListCtrl)
+	{
+		m_OilDensityListCtrl.DeleteAllItems();
+
+		int nIndex = m_CompanyIDCombo.GetCurSel();
+		if (nIndex == -1) return;
+		CString strCompanyID = _T("");
+		m_CompanyIDCombo.GetLBText(nIndex, strCompanyID);
+		if (strCompanyID.GetLength() == 0) return;
+		int companyID = _ttoi(strCompanyID);
+
+		nIndex = m_OilTypeCombo.GetCurSel();
+		if (nIndex == -1) return;
+		CString strTypeID = _T("");
+		m_OilTypeCombo.GetLBText(nIndex, strTypeID);
+		if (strTypeID.GetLength() == 0) return;
+		int typeID = _ttoi(strTypeID);
+
+		OilDensityMap* oilDensityMap = DBHelper::GetInstance()->GetOilDensityMap();
+
+		POSITION pos = oilDensityMap->GetStartPosition();
+		while (pos != NULL)
+		{
+			int key = 0;
+			OilDensityModal odm;
+			oilDensityMap->GetNextAssoc(pos, key, odm);
+
+			if (odm.m_CompanyID != companyID || 
+				odm.m_OilTypeID != typeID) continue;
+
+			CString str;
+			str.Format(_T("%d"), key);
+			int nRow = m_OilDensityListCtrl.InsertItem(0, str);
+
+			str.Format(_T("%f"), odm.m_OilDensitySummer);
+			m_OilDensityListCtrl.SetItemText(nRow, 1, str);
+
+			str.Format(_T("%f"), odm.m_OilDensityWinter);
+			m_OilDensityListCtrl.SetItemText(nRow, 2, str);
 		}
 	}
 }
@@ -90,4 +159,24 @@ void HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo()
 	{
 		m_CompanyNameLabel.SetWindowTextW(cm.m_CompanyName);
 	}
+
+	RefreshOilDensityListCtrl();
+}
+
+void HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo()
+{
+	int nIndex = m_OilTypeCombo.GetCurSel();
+	CString strTypeID = _T("");
+	m_OilTypeCombo.GetLBText(nIndex, strTypeID);
+
+	int typeID = _ttoi(strTypeID);
+	OilTypeMap* oilTypeMap = DBHelper::GetInstance()->GetOilTypeMap();
+
+	OilTypeModal om;
+	if (oilTypeMap->Lookup(typeID, om))
+	{
+		m_OilTypeLabel.SetWindowTextW(om.m_OilTypeComments);
+	}
+
+	RefreshOilDensityListCtrl();
 }
