@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "HSJ_OilManager.h"
 #include "HSJ_OilDensityDlg.h"
-
+#include "DBHelper.h"
 
 // HSJ_OilDensityDlg ¶Ô»°¿ò
 
@@ -32,6 +32,8 @@ void HSJ_OilDensityDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(HSJ_OilDensityDlg, CDialog)
+	ON_BN_CLICKED(IDC_DENSITY_LOAD_BTN, &HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn)
+	ON_CBN_SELCHANGE(IDC_DENSITY_COMPANY_ID_COMBO, &HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo)
 END_MESSAGE_MAP()
 
 
@@ -49,4 +51,43 @@ BOOL HSJ_OilDensityDlg::OnInitDialog()
 	m_OilDensityListCtrl.InsertColumn(2, _T("OilDensityWiner"),LVCFMT_LEFT, 200);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+
+void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
+{
+	DBHelper::GetInstance()->ReloadOilDensity();
+
+	if (m_CompanyIDCombo)
+	{
+		CompanyMap* companyMap = DBHelper::GetInstance()->GetCompanyMap();
+
+		POSITION pos = companyMap->GetStartPosition();
+		while (pos != NULL)
+		{
+			int key;
+			CompanyModal cm;
+			companyMap->GetNextAssoc(pos, key, cm);
+
+			CString str;
+			str.Format(_T("%d"), key);
+
+			m_CompanyIDCombo.AddString(str);
+		}
+	}
+}
+
+void HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo()
+{
+	int nIndex = m_CompanyIDCombo.GetCurSel();
+	CString strCompanyID = _T("");
+	m_CompanyIDCombo.GetLBText(nIndex, strCompanyID);
+
+	int companyID = _ttoi(strCompanyID);
+	CompanyMap* companyMap = DBHelper::GetInstance()->GetCompanyMap();
+
+	CompanyModal cm;
+	if (companyMap->Lookup(companyID, cm))
+	{
+		m_CompanyNameLabel.SetWindowTextW(cm.m_CompanyName);
+	}
 }

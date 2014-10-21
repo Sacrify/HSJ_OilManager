@@ -24,8 +24,12 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CListCtrl m_OilDensityListCtrl;
+	
 	CComboBox m_CompanyIDCombo;
 	CComboBox m_OilTypeCombo;
 	CStatic m_CompanyNameLabel;
 	CStatic m_OilTypeLabel;
+
+	afx_msg void OnBnClickedDensityLoadBtn();
+	afx_msg void OnCbnSelchangeDensityCompanyIdCombo();
 };

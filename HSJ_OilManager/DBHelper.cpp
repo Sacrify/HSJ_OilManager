@@ -103,6 +103,26 @@ bool DBHelper::InitInstance()
 	return true;
 }
 
+CompanyTypeMap* DBHelper::GetCompanyTypeMap()
+{
+	return m_CompanyTypeMap;
+}
+
+CompanyMap* DBHelper::GetCompanyMap()
+{
+	return m_CompanyMap;
+}
+
+OilTypeMap* DBHelper::GetOilTypeMap()
+{
+	return m_OilTypeMap;
+}
+
+OilDensityMap* DBHelper::GetOilDensityMap()
+{
+	return m_OilDensityMap;
+}
+
 bool DBHelper::OpenDB()
 {
 	if (m_pConnection)
@@ -135,6 +155,15 @@ bool DBHelper::OpenDB()
 }
 
 void DBHelper::ReloadAll()
+{
+	ReloadCompanyTypeMap();
+	ReloadCompanyMap();
+
+	ReloadOilTypeMap();
+	ReloadOilDensityMap();
+}
+
+void DBHelper::ReloadOilDensity()
 {
 	ReloadCompanyTypeMap();
 	ReloadCompanyMap();

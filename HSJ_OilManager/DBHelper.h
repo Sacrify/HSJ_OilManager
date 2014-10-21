@@ -26,16 +26,16 @@ class DBHelper
 {
 private:
 	DBHelper(void);
-	static DBHelper* m_pInstance;
+	static DBHelper*	m_pInstance;
 
-	_ConnectionPtr m_pConnection; 
-	_RecordsetPtr m_pRecordset;
+	_ConnectionPtr		m_pConnection; 
+	_RecordsetPtr		m_pRecordset;
 
-	CompanyTypeMap* m_CompanyTypeMap;
-	CompanyMap* m_CompanyMap;
+	CompanyTypeMap*		m_CompanyTypeMap;
+	CompanyMap*			m_CompanyMap;
 
-	OilTypeMap* m_OilTypeMap;
-	OilDensityMap* m_OilDensityMap;
+	OilTypeMap*			m_OilTypeMap;
+	OilDensityMap*		m_OilDensityMap;
 
 public:
 	~DBHelper(void);
@@ -43,10 +43,18 @@ public:
 public:
 	static DBHelper* GetInstance();
 
+	CompanyTypeMap*		GetCompanyTypeMap();
+	CompanyMap*			GetCompanyMap();
+
+	OilTypeMap*			GetOilTypeMap();
+	OilDensityMap*		GetOilDensityMap();
+
 	bool InitInstance();
 	bool OpenDB();
 
 	void ReloadAll();
+	void ReloadOilDensity();
+
 	
 	void ReloadCompanyTypeMap();
 	void ReloadCompanyMap();
