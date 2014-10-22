@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(HSJ_OilDensityDlg, CDialog)
 	ON_BN_CLICKED(IDC_DENSITY_LOAD_BTN, &HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn)
 	ON_CBN_SELCHANGE(IDC_DENSITY_COMPANY_ID_COMBO, &HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo)
 	ON_CBN_SELCHANGE(IDC_DENSITY_OIL_TYPE_COMBO, &HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_OIL_DENSITY_LISTCONTROL, &HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol)
 END_MESSAGE_MAP()
 
 
@@ -136,10 +137,10 @@ void HSJ_OilDensityDlg::RefreshOilDensityListCtrl()
 			str.Format(_T("%d"), key);
 			int nRow = m_OilDensityListCtrl.InsertItem(0, str);
 
-			str.Format(_T("%f"), odm.m_OilDensitySummer);
+			str.Format(_T("%.3f"), odm.m_OilDensitySummer);
 			m_OilDensityListCtrl.SetItemText(nRow, 1, str);
 
-			str.Format(_T("%f"), odm.m_OilDensityWinter);
+			str.Format(_T("%.3f"), odm.m_OilDensityWinter);
 			m_OilDensityListCtrl.SetItemText(nRow, 2, str);
 		}
 	}
@@ -179,4 +180,22 @@ void HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo()
 	}
 
 	RefreshOilDensityListCtrl();
+}
+
+void HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+
+	BOOL bSelectedNow = (pNMLV->uNewState & LVIS_SELECTED);
+	BOOL bSelectedBefore = (pNMLV ->uOldState & LVIS_SELECTED);
+	if (bSelectedNow && !bSelectedBefore)
+	{
+		int nItemIndex = pNMLV->iItem;
+
+		CString str = 
+		m_OilDensityListCtrl.GetItemText(0, 1);
+		
+	}
+
+	*pResult = 0;
 }

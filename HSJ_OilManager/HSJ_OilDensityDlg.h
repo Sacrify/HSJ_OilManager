@@ -35,4 +35,5 @@ public:
 	afx_msg void OnCbnSelchangeDensityCompanyIdCombo();
 	afx_msg void OnCbnSelchangeDensityOilTypeCombo();
 	void RefreshOilDensityListCtrl();
+	afx_msg void OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRESULT *pResult);
 };

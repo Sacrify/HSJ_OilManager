@@ -10,14 +10,14 @@ public:
 
 	CString m_MMSI;
 	CString m_ShipName;
-	float m_Speed;
-	float m_LoadWeight;
-	float m_Draft;
+	double m_Speed;
+	double m_LoadWeight;
+	double m_Draft;
 	int m_LlunSpeed;
 	int m_RlunSpeed;
 	CString m_Memo;
 	CString m_DeviceID;
-	float m_MaxGPS;
+	double m_MaxGPS;
 	int m_CompanyID;
 	int m_OilType;
 };

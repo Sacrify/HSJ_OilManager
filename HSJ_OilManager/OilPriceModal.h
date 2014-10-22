@@ -10,6 +10,6 @@ public:
 
 	int m_OilPriceID;
     CTime m_Stime;
-	float m_Price;
+	double m_Price;
 	int m_OilType;
 };

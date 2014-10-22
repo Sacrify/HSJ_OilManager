@@ -11,6 +11,6 @@ public:
 	int m_OilDensityID;
 	int m_CompanyID;
 	int m_OilTypeID;
-	float m_OilDensitySummer;
-	float m_OilDensityWinter;
+	double m_OilDensitySummer;
+	double m_OilDensityWinter;
 };

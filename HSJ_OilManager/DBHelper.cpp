@@ -354,8 +354,8 @@ void DBHelper::ReloadOilDensityMap()
 			odm.m_OilDensityID = OilDensityID.intVal;
 			odm.m_CompanyID = CompanyID.intVal;
 			odm.m_OilTypeID = OilTypeID.intVal;
-			odm.m_OilDensitySummer = OilDensitySummer.fltVal;
-			odm.m_OilDensityWinter = OilDensityWinter.fltVal;
+			odm.m_OilDensitySummer = OilDensitySummer.dblVal;
+			odm.m_OilDensityWinter = OilDensityWinter.dblVal;
 
 			m_OilDensityMap->SetAt(odm.m_OilDensityID, odm);
 		}
