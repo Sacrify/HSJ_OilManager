@@ -51,4 +51,4 @@
 #endif
 #endif
 
-#define DEF_LIST_ITEM_TEXT_SIZE 1024
+#include "Localization_CN.h"

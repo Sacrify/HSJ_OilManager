@@ -28,6 +28,8 @@ private:
 	DBHelper(void);
 	static DBHelper*	m_pInstance;
 
+    // Here we have no stored procedure, 
+    // So only use connectionPtr and recordsetPrt 
 	_ConnectionPtr		m_pConnection; 
 	_RecordsetPtr		m_pRecordset;
 
@@ -61,5 +63,8 @@ public:
 
 	void ReloadOilTypeMap();
 	void ReloadOilDensityMap();
+
+public:
+    bool UpdateOilDensity(const OilDensityModal& modal);
 
 };

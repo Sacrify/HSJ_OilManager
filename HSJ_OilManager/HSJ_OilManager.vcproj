@@ -236,6 +236,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Localization_CN.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Resource.h"
 				>
 			</File>

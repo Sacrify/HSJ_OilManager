@@ -1,7 +1,7 @@
 #pragma once
 #include "afxcmn.h"
 #include "afxwin.h"
-
+#include "DBHelper.h"
 
 // HSJ_OilDensityDlg ¶Ô»°¿ò
 
@@ -31,11 +31,18 @@ public:
 	CStatic m_OilTypeLabel;
 	CStatic m_LoadStatus;
 
+    bool m_bEditMode;
+    OilDensityModal m_varOilDensityModal;
+
 	CEdit m_varIDEdit;
 	CEdit m_varDensitySummerEdit;
 	CEdit m_varDensityWinterEdit;
+	CButton m_varEditBtn;
 
-	bool m_bEditMode;
+
+
+    void EnableVarEdit(bool bEnable);
+    void ResetVarEdit();
 
 	afx_msg void OnBnClickedDensityLoadBtn();
 	afx_msg void OnCbnSelchangeDensityCompanyIdCombo();
@@ -43,4 +50,6 @@ public:
 	void RefreshOilDensityListCtrl();
 	afx_msg void OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnBnClickedDensityEditBtn();
+
 };

@@ -369,3 +369,26 @@ void DBHelper::ReloadOilDensityMap()
 
 	m_pRecordset->Close();
 }
+
+
+// Update Functions
+bool DBHelper::UpdateOilDensity(const OilDensityModal& modal)
+{
+    if (OpenDB() == false) return false;
+
+    try
+    {
+        _variant_t RecordsAffected;
+        m_pConnection->Execute(
+            "",
+            &RecordsAffected,
+            adCmdText);
+    }
+	catch (_com_error &e)  
+	{  
+		AfxMessageBox(e.Description());
+		return false;
+	}
+
+    return true;
+}
