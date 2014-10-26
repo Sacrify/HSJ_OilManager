@@ -12,6 +12,7 @@ IMPLEMENT_DYNAMIC(HSJ_OilDensityDlg, CDialog)
 
 HSJ_OilDensityDlg::HSJ_OilDensityDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(HSJ_OilDensityDlg::IDD, pParent)
+	, m_bEditMode(false)
 {
 
 }
@@ -29,6 +30,9 @@ void HSJ_OilDensityDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMPANY_NAME_CONTENT_LABEL, m_CompanyNameLabel);
 	DDX_Control(pDX, IDC_OIL_TYPE_CONTENT_LABEL, m_OilTypeLabel);
 	DDX_Control(pDX, IDC_DENSITY_LOAD_STATUS_LABEL, m_LoadStatus);
+	DDX_Control(pDX, IDC_DENSITY_DETAIL_ID_EDIT, m_varIDEdit);
+	DDX_Control(pDX, IDC_DENSITY_DETAIL_SUMMBER_EDIT, m_varDensitySummerEdit);
+	DDX_Control(pDX, IDC_DENSITY_DETAIL_WINTER_EDIT, m_varDensityWinterEdit);
 }
 
 
@@ -37,6 +41,7 @@ BEGIN_MESSAGE_MAP(HSJ_OilDensityDlg, CDialog)
 	ON_CBN_SELCHANGE(IDC_DENSITY_COMPANY_ID_COMBO, &HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo)
 	ON_CBN_SELCHANGE(IDC_DENSITY_OIL_TYPE_COMBO, &HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_OIL_DENSITY_LISTCONTROL, &HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -198,4 +203,30 @@ void HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRE
 	}
 
 	*pResult = 0;
+}
+
+HBRUSH HSJ_OilDensityDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// 在此更改 DC 的任何属性
+
+	// 如果默认的不是所需画笔，则返回另一个画笔
+
+	if (pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_ID_EDIT ||
+		pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_SUMMBER_EDIT || 
+		pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_WINTER_EDIT)
+	{
+		if (m_bEditMode == false)
+		{
+			pDC->SetTextColor(RGB(0, 0, 0));
+		}
+		else
+		{
+			pDC->SetTextColor(RGB(128, 128, 128));
+		}
+	}
+
+
+	return hbr;
 }

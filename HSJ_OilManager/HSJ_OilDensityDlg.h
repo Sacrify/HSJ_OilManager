@@ -31,9 +31,16 @@ public:
 	CStatic m_OilTypeLabel;
 	CStatic m_LoadStatus;
 
+	CEdit m_varIDEdit;
+	CEdit m_varDensitySummerEdit;
+	CEdit m_varDensityWinterEdit;
+
+	bool m_bEditMode;
+
 	afx_msg void OnBnClickedDensityLoadBtn();
 	afx_msg void OnCbnSelchangeDensityCompanyIdCombo();
 	afx_msg void OnCbnSelchangeDensityOilTypeCombo();
 	void RefreshOilDensityListCtrl();
 	afx_msg void OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };
