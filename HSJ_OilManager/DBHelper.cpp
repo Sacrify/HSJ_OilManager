@@ -174,16 +174,10 @@ void DBHelper::ReloadOilDensity()
 
 void DBHelper::ReloadCompanyTypeMap()
 {
-	if (OpenDB() == false) return;
-
 	try
 	{
-		_variant_t RecordsAffected; 
-		m_pRecordset = m_pConnection->Execute(
-			"SELECT CompanyTypeID, CompanyTypeName " \
-			"FROM hsj_company_type",
-			&RecordsAffected,
-			adCmdText);
+	    if (SelectDB("SELECT CompanyTypeID, CompanyTypeName " \
+            "FROM hsj_company_type") == false) return;
 	}
 	catch (_com_error &e)  
 	{  
@@ -221,16 +215,10 @@ void DBHelper::ReloadCompanyTypeMap()
 
 void DBHelper::ReloadCompanyMap()
 {
-	if (OpenDB() == false) return;
-
 	try
 	{
-		_variant_t RecordsAffected; 
-		m_pRecordset = m_pConnection->Execute(
-			"SELECT CompanyID, CompanyName, CompanyTypeID, CompanyParentID " \
-			"FROM hsj_company",
-			&RecordsAffected,
-			adCmdText);
+	    if (SelectDB("SELECT CompanyID, CompanyName, CompanyTypeID, CompanyParentID " \
+			"FROM hsj_company") == false) return;
 	}
 	catch (_com_error &e)  
 	{  
@@ -272,17 +260,11 @@ void DBHelper::ReloadCompanyMap()
 
 void DBHelper::ReloadOilTypeMap()
 {
-	if (OpenDB() == false) return;
-
 	try
 	{
-		_variant_t RecordsAffected; 
-		m_pRecordset = m_pConnection->Execute(
-			"SELECT OilTypeID, OilTypeComments " \
-			"FROM hsj_oil_type",
-			&RecordsAffected,
-			adCmdText);
-	}
+    	if (SelectDB("SELECT OilTypeID, OilTypeComments " \
+			"FROM hsj_oil_type") == false) return;
+    }
 	catch (_com_error &e)  
 	{  
 		AfxMessageBox(e.Description());
@@ -319,17 +301,11 @@ void DBHelper::ReloadOilTypeMap()
 
 void DBHelper::ReloadOilDensityMap()
 {
-	if (OpenDB() == false) return;
-
 	try
 	{
-		_variant_t RecordsAffected; 
-		m_pRecordset = m_pConnection->Execute(
-			"SELECT OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter " \
-			"FROM hsj_oil_density",
-			&RecordsAffected,
-			adCmdText);
-	}
+    	if (SelectDB("SELECT OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter " \
+			"FROM hsj_oil_density") == false) return;
+    }
 	catch (_com_error &e)  
 	{  
 		AfxMessageBox(e.Description());
@@ -371,16 +347,16 @@ void DBHelper::ReloadOilDensityMap()
 }
 
 
-bool DBHelper::SelectDB(CString commandLine)
+bool DBHelper::SelectDB(const _bstr_t& commandLine)
 {
-     if (OpenDB() == false) return false;
-    if (commandLine.GetLength() == 0) return false;
+    if (OpenDB() == false) return false;
+    if (commandLine.length() == 0) return false;
 
     try
     {
         _variant_t RecordsAffected;
         m_pRecordset = m_pConnection->Execute(
-            (_bstr_t)commandLine,
+            commandLine,
             &RecordsAffected,
             adCmdText);
     }
@@ -393,16 +369,16 @@ bool DBHelper::SelectDB(CString commandLine)
     return true;
 }
 
-bool DBHelper::UpdateDB(CString commandLine)
+bool DBHelper::UpdateDB(const _bstr_t& commandLine)
 {
     if (OpenDB() == false) return false;
-    if (commandLine.GetLength() == 0) return false;
+    if (commandLine.length() == 0) return false;
 
     try
     {
         _variant_t RecordsAffected;
         m_pConnection->Execute(
-            (_bstr_t)commandLine,
+            commandLine,
             &RecordsAffected,
             adCmdText);
     }
@@ -423,7 +399,16 @@ bool DBHelper::UpdateOilDensity(const OilDensityModal& modal, DB_ACT act)
      {
      case DB_ACT_UPDATE:
          {
-
+            commandLine = 
+                CString("UPDATE hsj_oil_density ") +
+                CString("SET ") +
+                CString("OilDensitySummer = ") +
+                modal.GetOilDensitySummer() + CString(", ") + 
+                CString("OilDensityWinter = ") + 
+                modal.GetOilDensityWinter() + CString(" ") + 
+                CString("WHERE ") + 
+                CString("OilDensityID = ") + 
+                modal.GetOilDensityID();
          }
          break;
 
@@ -439,5 +424,5 @@ bool DBHelper::UpdateOilDensity(const OilDensityModal& modal, DB_ACT act)
          }
          break;
      }
-    return UpdateDB(commandLine);
+    return UpdateDB((_bstr_t)commandLine);
 }

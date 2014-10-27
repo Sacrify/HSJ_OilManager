@@ -77,8 +77,8 @@ public:
 	void ReloadOilDensityMap();
 
 protected:
-    virtual bool SelectDB(CString commandLine);
-    virtual bool UpdateDB(CString commandLine);
+    virtual bool SelectDB(const _bstr_t& commandLine);
+    virtual bool UpdateDB(const _bstr_t& commandLine);
 
 public:
     bool UpdateOilDensity(const OilDensityModal& modal, DB_ACT act);
