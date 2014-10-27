@@ -24,6 +24,18 @@ typedef CMap<int, int, OilDensityModal, OilDensityModal> OilDensityMap;
 
 class DBHelper
 {
+public:
+    typedef enum _DB_ACT
+    {
+        DB_ACT_NONE = 0,
+        DB_ACT_UPDATE,
+        DB_ACT_ADD,
+        DB_ACT_DEL,
+        DB_ACT_SEARCH,
+
+        DB_ACT_COUNT
+    } DB_ACT;
+
 private:
 	DBHelper(void);
 	static DBHelper*	m_pInstance;
@@ -64,7 +76,11 @@ public:
 	void ReloadOilTypeMap();
 	void ReloadOilDensityMap();
 
+protected:
+    virtual bool SelectDB(CString commandLine);
+    virtual bool UpdateDB(CString commandLine);
+
 public:
-    bool UpdateOilDensity(const OilDensityModal& modal);
+    bool UpdateOilDensity(const OilDensityModal& modal, DB_ACT act);
 
 };

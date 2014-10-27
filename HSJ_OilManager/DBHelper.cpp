@@ -371,16 +371,16 @@ void DBHelper::ReloadOilDensityMap()
 }
 
 
-// Update Functions
-bool DBHelper::UpdateOilDensity(const OilDensityModal& modal)
+bool DBHelper::SelectDB(CString commandLine)
 {
-    if (OpenDB() == false) return false;
+     if (OpenDB() == false) return false;
+    if (commandLine.GetLength() == 0) return false;
 
     try
     {
         _variant_t RecordsAffected;
-        m_pConnection->Execute(
-            "",
+        m_pRecordset = m_pConnection->Execute(
+            (_bstr_t)commandLine,
             &RecordsAffected,
             adCmdText);
     }
@@ -391,4 +391,53 @@ bool DBHelper::UpdateOilDensity(const OilDensityModal& modal)
 	}
 
     return true;
+}
+
+bool DBHelper::UpdateDB(CString commandLine)
+{
+    if (OpenDB() == false) return false;
+    if (commandLine.GetLength() == 0) return false;
+
+    try
+    {
+        _variant_t RecordsAffected;
+        m_pConnection->Execute(
+            (_bstr_t)commandLine,
+            &RecordsAffected,
+            adCmdText);
+    }
+	catch (_com_error &e)  
+	{  
+		AfxMessageBox(e.Description());
+		return false;
+	}
+
+    return true;
+}
+
+// Update Functions
+bool DBHelper::UpdateOilDensity(const OilDensityModal& modal, DB_ACT act)
+{
+     CString commandLine = STR_EMPTY;
+     switch (act)
+     {
+     case DB_ACT_UPDATE:
+         {
+
+         }
+         break;
+
+     case DB_ACT_ADD:
+         {
+
+         }
+         break;
+
+     case DB_ACT_DEL:
+         {
+
+         }
+         break;
+     }
+    return UpdateDB(commandLine);
 }

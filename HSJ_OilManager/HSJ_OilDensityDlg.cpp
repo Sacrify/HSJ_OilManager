@@ -55,9 +55,9 @@ BOOL HSJ_OilDensityDlg::OnInitDialog()
     DWORD dwExStyle = m_OilDensityListCtrl.GetExtendedStyle();
     m_OilDensityListCtrl.SetExtendedStyle(dwExStyle|LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES);
 
-    m_OilDensityListCtrl.InsertColumn(0, _T("OilDensityID"),LVCFMT_LEFT, 100);
-    m_OilDensityListCtrl.InsertColumn(1, _T("OilDensitySummer"),LVCFMT_LEFT, 200);
-    m_OilDensityListCtrl.InsertColumn(2, _T("OilDensityWiner"),LVCFMT_LEFT, 200);
+    m_OilDensityListCtrl.InsertColumn(0, STR_UI_OIL_DENSITY_ID, LVCFMT_LEFT, 100);
+    m_OilDensityListCtrl.InsertColumn(1, STR_UI_OIL_DENSITY_SUMMER, LVCFMT_LEFT, 200);
+    m_OilDensityListCtrl.InsertColumn(2, STR_UI_OIL_DENSITY_WINTER, LVCFMT_LEFT, 200);
 
     return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -78,7 +78,7 @@ void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
             companyMap->GetNextAssoc(pos, key, cm);
 
             CString str;
-            str.Format(_T("%d"), key);
+            str.Format(STR_INT, key);
 
             m_CompanyIDCombo.AddString(str);
         }
@@ -96,7 +96,7 @@ void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
             oilTypeMap->GetNextAssoc(pos, key, om);
 
             CString str;
-            str.Format(_T("%d"), key);
+            str.Format(STR_INT, key);
 
             m_OilTypeCombo.AddString(str);
         }
@@ -116,14 +116,14 @@ void HSJ_OilDensityDlg::RefreshOilDensityListCtrl()
 
         int nIndex = m_CompanyIDCombo.GetCurSel();
         if (nIndex == -1) return;
-        CString strCompanyID = _T("");
+        CString strCompanyID = STR_EMPTY;
         m_CompanyIDCombo.GetLBText(nIndex, strCompanyID);
         if (strCompanyID.GetLength() == 0) return;
         int companyID = _ttoi(strCompanyID);
 
         nIndex = m_OilTypeCombo.GetCurSel();
         if (nIndex == -1) return;
-        CString strTypeID = _T("");
+        CString strTypeID = STR_EMPTY;
         m_OilTypeCombo.GetLBText(nIndex, strTypeID);
         if (strTypeID.GetLength() == 0) return;
         int typeID = _ttoi(strTypeID);
@@ -141,13 +141,13 @@ void HSJ_OilDensityDlg::RefreshOilDensityListCtrl()
                 odm.m_OilTypeID != typeID) continue;
 
             CString str;
-            str.Format(_T("%d"), key);
+            str.Format(STR_INT, key);
             int nRow = m_OilDensityListCtrl.InsertItem(0, str);
 
-            str.Format(_T("%.3f"), odm.m_OilDensitySummer);
+            str.Format(STR_FLOAT_3, odm.m_OilDensitySummer);
             m_OilDensityListCtrl.SetItemText(nRow, 1, str);
 
-            str.Format(_T("%.3f"), odm.m_OilDensityWinter);
+            str.Format(STR_FLOAT_3, odm.m_OilDensityWinter);
             m_OilDensityListCtrl.SetItemText(nRow, 2, str);
         }
     }
@@ -156,7 +156,7 @@ void HSJ_OilDensityDlg::RefreshOilDensityListCtrl()
 void HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo()
 {
     int nIndex = m_CompanyIDCombo.GetCurSel();
-    CString strCompanyID = _T("");
+    CString strCompanyID = STR_EMPTY;
     m_CompanyIDCombo.GetLBText(nIndex, strCompanyID);
 
     int companyID = _ttoi(strCompanyID);
@@ -174,7 +174,7 @@ void HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo()
 void HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo()
 {
     int nIndex = m_OilTypeCombo.GetCurSel();
-    CString strTypeID = _T("");
+    CString strTypeID = STR_EMPTY;
     m_OilTypeCombo.GetLBText(nIndex, strTypeID);
 
     int typeID = _ttoi(strTypeID);

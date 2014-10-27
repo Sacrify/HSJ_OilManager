@@ -13,3 +13,44 @@ OilDensityModal::OilDensityModal(void)
 OilDensityModal::~OilDensityModal(void)
 {
 }
+
+
+CString OilDensityModal::GetOilDensityID()
+{
+    CString str = STR_EMPTY;
+    str.Format(STR_INT, m_OilDensityID);
+
+    return str;
+}
+    
+CString OilDensityModal::GetCompanyID()
+{
+    CString str = STR_EMPTY;
+    str.Format(STR_INT, m_CompanyID);
+
+    return str;
+}
+
+CString OilDensityModal::GetOilTypeID()
+{
+    CString str = STR_EMPTY;
+    str.Format(STR_INT, m_OilTypeID);
+
+    return str;
+}
+
+CString OilDensityModal::GetOilDensitySummer()
+{
+    CString str = STR_EMPTY;
+    str.Format(STR_FLOAT_3, m_OilDensitySummer);
+
+    return str;
+}
+
+CString OilDensityModal::GetOilDensityWinter()
+{
+    CString str = STR_EMPTY;
+    str.Format(STR_FLOAT_3, m_OilDensityWinter);
+
+    return str;
+}
