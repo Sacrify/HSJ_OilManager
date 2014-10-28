@@ -394,11 +394,11 @@ bool DBHelper::UpdateDB(const _bstr_t& commandLine)
 // Update Functions
 bool DBHelper::UpdateOilDensity(const OilDensityModal& modal, DB_ACT act)
 {
-     CString commandLine = STR_EMPTY;
-     switch (act)
-     {
-     case DB_ACT_UPDATE:
-         {
+    CString commandLine = STR_EMPTY;
+    switch (act)
+    {
+    case DB_ACT_UPDATE:
+        {
             commandLine = 
                 CString("UPDATE hsj_oil_density ") +
                 CString("SET ") +
@@ -409,20 +409,29 @@ bool DBHelper::UpdateOilDensity(const OilDensityModal& modal, DB_ACT act)
                 CString("WHERE ") + 
                 CString("OilDensityID = ") + 
                 modal.GetOilDensityID();
-         }
-         break;
+        }
+        break;
 
-     case DB_ACT_ADD:
-         {
+    case DB_ACT_ADD:
+        {
+            commandLine = 
+                CString("INSERT INTO hsj_oil_density (CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter) ") + 
+                CString("VALUES ( ") + 
+                modal.GetCompanyID() + CString(", ") +
+                modal.GetOilTypeID() + CString(", ") +
+                modal.GetOilDensitySummer() + CString(", ") + 
+                modal.GetOilDensityWinter() + CString(" )");
+        }
+        break;
 
-         }
-         break;
+    case DB_ACT_DEL:
+        {
+            commandLine = 
+                CString("DELETE FROM hsj_oil_density WHERE OilDensityID = ") + 
+                modal.GetOilDensityID();
+        }
+        break;
+    }
 
-     case DB_ACT_DEL:
-         {
-
-         }
-         break;
-     }
     return UpdateDB((_bstr_t)commandLine);
 }
