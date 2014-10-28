@@ -15,7 +15,7 @@ OilDensityModal::~OilDensityModal(void)
 }
 
 
-CString OilDensityModal::GetOilDensityID()
+CString OilDensityModal::GetOilDensityID() const
 {
     CString str = STR_EMPTY;
     str.Format(STR_INT, m_OilDensityID);
@@ -23,7 +23,7 @@ CString OilDensityModal::GetOilDensityID()
     return str;
 }
     
-CString OilDensityModal::GetCompanyID()
+CString OilDensityModal::GetCompanyID() const
 {
     CString str = STR_EMPTY;
     str.Format(STR_INT, m_CompanyID);
@@ -31,7 +31,7 @@ CString OilDensityModal::GetCompanyID()
     return str;
 }
 
-CString OilDensityModal::GetOilTypeID()
+CString OilDensityModal::GetOilTypeID() const
 {
     CString str = STR_EMPTY;
     str.Format(STR_INT, m_OilTypeID);
@@ -39,7 +39,7 @@ CString OilDensityModal::GetOilTypeID()
     return str;
 }
 
-CString OilDensityModal::GetOilDensitySummer()
+CString OilDensityModal::GetOilDensitySummer() const
 {
     CString str = STR_EMPTY;
     str.Format(STR_FLOAT_3, m_OilDensitySummer);
@@ -47,7 +47,7 @@ CString OilDensityModal::GetOilDensitySummer()
     return str;
 }
 
-CString OilDensityModal::GetOilDensityWinter()
+CString OilDensityModal::GetOilDensityWinter() const
 {
     CString str = STR_EMPTY;
     str.Format(STR_FLOAT_3, m_OilDensityWinter);
