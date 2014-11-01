@@ -119,7 +119,7 @@ void HSJ_OilDensityDlg::RefreshOilDensityListCtrl()
         CString strCompanyID = STR_EMPTY;
         m_CompanyIDCombo.GetLBText(nIndex, strCompanyID);
         if (strCompanyID.GetLength() == 0) return;
-        int companyID = _ttoi(strCompanyID);
+        int companyID = Utils::CString2Int(strCompanyID);
 
         nIndex = m_OilTypeCombo.GetCurSel();
         if (nIndex == -1) return;
@@ -201,9 +201,24 @@ void HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRE
 
         if (nItemIndex != -1)
         {
-            m_varIDEdit.SetWindowTextW(m_OilDensityListCtrl.GetItemText(nItemIndex, 0));
-            m_varDensitySummerEdit.SetWindowTextW(m_OilDensityListCtrl.GetItemText(nItemIndex, 1));
-            m_varDensityWinterEdit.SetWindowTextW(m_OilDensityListCtrl.GetItemText(nItemIndex, 2));
+            //m_varIDEdit.SetWindowTextW(m_OilDensityListCtrl.GetItemText(nItemIndex, 0));
+            //m_varDensitySummerEdit.SetWindowTextW(m_OilDensityListCtrl.GetItemText(nItemIndex, 1));
+            //m_varDensityWinterEdit.SetWindowTextW(m_OilDensityListCtrl.GetItemText(nItemIndex, 2));
+            
+            int oilDensityID = 
+                Utils::CString2Int(m_OilDensityListCtrl.GetItemText(nItemIndex, 0));
+            
+             OilDensityMap* oilDensityMap = DBHelper::GetInstance()->GetOilDensityMap();
+
+             if (oilDensityMap != NULL)
+             {
+                if (oilDensityMap->Lookup(oilDensityID, m_varOilDensityModal))
+                {
+                    m_varIDEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensityID());
+                    m_varDensitySummerEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensitySummer());
+                    m_varDensityWinterEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensityWinter());
+                }
+             }
         }
         else
         {

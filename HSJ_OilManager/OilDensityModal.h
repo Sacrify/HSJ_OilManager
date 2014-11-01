@@ -8,15 +8,9 @@ public:
 	OilDensityModal(void);
 	virtual ~OilDensityModal(void);
 
-    CString GetOilDensityID() const;
-    CString GetCompanyID() const;
-    CString GetOilTypeID() const;
-    CString GetOilDensitySummer() const;
-    CString GetOilDensityWinter() const;
-
-	int m_OilDensityID;
-	int m_CompanyID;
-	int m_OilTypeID;
-	double m_OilDensitySummer;
-	double m_OilDensityWinter;
+	PROPERTY_INT(OilDensityID);
+	PROPERTY_INT(CompanyID);
+	PROPERTY_INT(OilTypeID);
+	PROPERTY_DOUBLE(OilDensitySummer, DENSITY_LEN);
+	PROPERTY_DOUBLE(OilDensityWinter, DENSITY_LEN);
 };
