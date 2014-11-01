@@ -16,6 +16,8 @@
 
 #define STR_UPDATE_OIL_DENSITY  _T("更新油密度")
 
+#define STR_EDIT_STATUS_WARNNING   _T("当前在编辑状态，是否需要保存？")
+
 
 #define STR_UI_OIL_DENSITY_ID       _T("OilDensityID")
 #define STR_UI_OIL_DENSITY_SUMMER   _T("OilDensitySummer")

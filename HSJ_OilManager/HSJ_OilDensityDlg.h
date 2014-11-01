@@ -44,6 +44,7 @@ public:
     CButton m_varDelBtn;
 
     void EnableVarEdit(bool bEnable);
+    void EnableVarEdit(bool bEnableBtn, bool bEnableEdit);
     void ResetVarEdit();
 
     void SetVarEditBtn(bool bEnable);

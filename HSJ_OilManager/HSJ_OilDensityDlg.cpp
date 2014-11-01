@@ -257,6 +257,9 @@ void HSJ_OilDensityDlg::ResetVarEdit()
 
     EnableVarEdit(false);
 
+    SetVarEditBtn(false);
+    SetVarAddBtn(false);
+
     m_varIDEdit.SetWindowTextW(STR_EMPTY);
     m_varDensitySummerEdit.SetWindowTextW(STR_EMPTY);
     m_varDensityWinterEdit.SetWindowTextW(STR_EMPTY);
@@ -264,12 +267,17 @@ void HSJ_OilDensityDlg::ResetVarEdit()
 
 void HSJ_OilDensityDlg::EnableVarEdit(bool bEnable)
 {
-    m_varEditBtn.EnableWindow(bEnable);
-    m_varAddBtn.EnableWindow(bEnable);
-    m_varDelBtn.EnableWindow(bEnable);
+    EnableVarEdit(bEnable, bEnable);
+}
 
-    m_varDensitySummerEdit.SetReadOnly(!bEnable);
-    m_varDensityWinterEdit.SetReadOnly(!bEnable);
+void HSJ_OilDensityDlg::EnableVarEdit(bool bEnableBtn, bool bEnableEdit)
+{
+    m_varEditBtn.EnableWindow(bEnableBtn);
+//    m_varAddBtn.EnableWindow(bEnableBtn);
+    m_varDelBtn.EnableWindow(bEnableBtn);
+
+    m_varDensitySummerEdit.SetReadOnly(!bEnableEdit);
+    m_varDensityWinterEdit.SetReadOnly(!bEnableEdit);
 }
 
 void HSJ_OilDensityDlg::SetVarEditBtn(bool bEnable)
@@ -311,5 +319,19 @@ void HSJ_OilDensityDlg::OnBnClickedDensityEditBtn()
 
 void HSJ_OilDensityDlg::OnBnClickedDensityAddBtn()
 {
-    
+    if (m_bEditMode)
+    {
+        if (IDYES == MessageBox(CString(STR_EDIT_STATUS_WARNNING), CString(STR_TIP), MB_ICONWARNING | MB_YESNO))
+        {
+            OnBnClickedDensityEditBtn();
+        }
+        
+        ResetVarEdit();
+    }
+
+    m_bAddMode = !m_bAddMode;
+    EnableVarEdit(false, m_bAddMode);
+    SetVarAddBtn(m_bAddMode);
+
+
 }
