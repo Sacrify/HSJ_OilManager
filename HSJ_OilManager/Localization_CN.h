@@ -16,7 +16,10 @@
 
 #define STR_UPDATE_OIL_DENSITY  _T("更新油密度")
 
-#define STR_EDIT_STATUS_WARNNING   _T("当前在编辑状态，是否需要保存？")
+#define STR_EDIT_STATUS_WARNNING    _T("当前在编辑状态，是否需要保存？")
+#define STR_ERROR_INPUT_WRONG       _T("输入参数有误")
+#define STR_ERROR_COMPANY_WRONG     _T("未选公司")
+#define STR_ERROR_OIL_TYPE_WRONG    _T("未选油类型")
 
 
 #define STR_UI_OIL_DENSITY_ID       _T("OilDensityID")

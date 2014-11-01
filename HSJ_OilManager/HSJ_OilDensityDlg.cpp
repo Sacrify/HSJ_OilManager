@@ -72,36 +72,31 @@ void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
 {
     DBHelper::GetInstance()->ReloadOilDensity();
 
-    if (m_CompanyIDCombo)
+    m_CompanyIDCombo.ResetContent();
+
+    CompanyMap* companyMap = DBHelper::GetInstance()->GetCompanyMap();
+
+    POSITION pos = companyMap->GetStartPosition();
+    while (pos != NULL)
     {
-        m_CompanyIDCombo.ResetContent();
-
-        CompanyMap* companyMap = DBHelper::GetInstance()->GetCompanyMap();
-
-        POSITION pos = companyMap->GetStartPosition();
-        while (pos != NULL)
-        {
-            int key = 0;
-            CompanyModal cm;
-            companyMap->GetNextAssoc(pos, key, cm);
-            m_CompanyIDCombo.AddString(Utils::Int2CString(key));
-        }
+        int key = 0;
+        CompanyModal cm;
+        companyMap->GetNextAssoc(pos, key, cm);
+        m_CompanyIDCombo.AddString(Utils::Int2CString(key));
     }
 
-    if (m_OilTypeCombo)
+
+    m_OilTypeCombo.ResetContent();
+
+    OilTypeMap* oilTypeMap = DBHelper::GetInstance()->GetOilTypeMap();
+
+    pos = oilTypeMap->GetStartPosition();
+    while (pos != NULL)
     {
-        m_OilTypeCombo.ResetContent();
-
-        OilTypeMap* oilTypeMap = DBHelper::GetInstance()->GetOilTypeMap();
-
-        POSITION pos = oilTypeMap->GetStartPosition();
-        while (pos != NULL)
-        {
-            int key = 0;
-            OilTypeModal om;
-            oilTypeMap->GetNextAssoc(pos, key, om);
-            m_OilTypeCombo.AddString(Utils::Int2CString(key));
-        }
+        int key = 0;
+        OilTypeModal om;
+        oilTypeMap->GetNextAssoc(pos, key, om);
+        m_OilTypeCombo.AddString(Utils::Int2CString(key));
     }
 
     RefreshOilDensityListCtrl();
@@ -158,13 +153,17 @@ void HSJ_OilDensityDlg::RefreshOilDensityListCtrl()
 void HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo()
 {
     int nIndex = m_CompanyIDCombo.GetCurSel();
+    if (nIndex == CB_ERR) return;
+
     CString strCompanyID = STR_EMPTY;
     m_CompanyIDCombo.GetLBText(nIndex, strCompanyID);
 
-    int companyID = _ttoi(strCompanyID);
-    CompanyMap* companyMap = DBHelper::GetInstance()->GetCompanyMap();
+    int companyID = Utils::CString2Int(strCompanyID);
+    m_varOilDensityModal.m_CompanyID = companyID;
 
+    CompanyMap* companyMap = DBHelper::GetInstance()->GetCompanyMap();
     CompanyModal cm;
+
     if (companyMap->Lookup(companyID, cm))
     {
         m_CompanyNameLabel.SetWindowTextW(cm.m_CompanyName);
@@ -176,13 +175,17 @@ void HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo()
 void HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo()
 {
     int nIndex = m_OilTypeCombo.GetCurSel();
+    if (nIndex == CB_ERR) return;
+
     CString strTypeID = STR_EMPTY;
     m_OilTypeCombo.GetLBText(nIndex, strTypeID);
 
-    int typeID = _ttoi(strTypeID);
-    OilTypeMap* oilTypeMap = DBHelper::GetInstance()->GetOilTypeMap();
+    int typeID = Utils::CString2Int(strTypeID);
+    m_varOilDensityModal.m_OilTypeID = typeID;
 
+    OilTypeMap* oilTypeMap = DBHelper::GetInstance()->GetOilTypeMap();
     OilTypeModal om;
+
     if (oilTypeMap->Lookup(typeID, om))
     {
         m_OilTypeLabel.SetWindowTextW(om.m_OilTypeComments);
@@ -292,18 +295,34 @@ void HSJ_OilDensityDlg::SetVarAddBtn(bool bEnable)
 
 void HSJ_OilDensityDlg::OnBnClickedDensityEditBtn()
 {
-    m_bEditMode = !m_bEditMode;
-    EnableVarEdit(m_bEditMode);
-    SetVarEditBtn(m_bEditMode);
-
-    if (m_bEditMode == false)
+    if (m_bEditMode)
+    {
+        m_bEditMode = false;
+        EnableVarEdit(m_bEditMode);
+        SetVarEditBtn(m_bEditMode);
+    }
+    else
     {
         CString windowText(STR_EMPTY);
         m_varDensitySummerEdit.GetWindowTextW(windowText);
         m_varOilDensityModal.m_OilDensitySummer = Utils::CString2Double(windowText);
 
+        if (windowText.GetLength() == 0 ||
+            m_varOilDensityModal.m_OilDensitySummer == 0)
+        {
+            MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+            return;
+        }
+
         m_varDensityWinterEdit.GetWindowTextW(windowText);
         m_varOilDensityModal.m_OilDensityWinter = Utils::CString2Double(windowText);
+
+        if (windowText.GetLength() == 0 ||
+            m_varOilDensityModal.m_OilDensityWinter == 0)
+        {
+            MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+            return;
+        }
 
         bool bEditSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_UPDATE);
         if (bEditSuc)
@@ -329,9 +348,47 @@ void HSJ_OilDensityDlg::OnBnClickedDensityAddBtn()
         ResetVarEdit();
     }
 
-    m_bAddMode = !m_bAddMode;
-    EnableVarEdit(false, m_bAddMode);
-    SetVarAddBtn(m_bAddMode);
+    if (m_bAddMode)
+    {
+        m_bAddMode = false;
+        EnableVarEdit(m_bAddMode);
+        SetVarAddBtn(m_bAddMode);
+    }
+    else
+    {
+        m_varOilDensityModal.m_OilDensityID = 0;
 
+        CString windowText(STR_EMPTY);
+        m_varDensitySummerEdit.GetWindowTextW(windowText);
+        m_varOilDensityModal.m_OilDensitySummer = Utils::CString2Double(windowText);
 
+        if (windowText.GetLength() == 0 ||
+            m_varOilDensityModal.m_OilDensitySummer == 0)
+        {
+            MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+            return;
+        }
+
+        m_varDensityWinterEdit.GetWindowTextW(windowText);
+        m_varOilDensityModal.m_OilDensityWinter = Utils::CString2Double(windowText);
+
+        if (windowText.GetLength() == 0 ||
+            m_varOilDensityModal.m_OilDensityWinter == 0)
+        {
+            MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+            return;
+        }
+
+        if (CB_ERR == m_CompanyIDCombo.GetCurSel())
+        {
+            MessageBox(CString(STR_ERROR_COMPANY_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+            return;
+        }
+        
+        if (CB_ERR == m_OilTypeCombo.GetCurSel())
+        {
+            MessageBox(CString(STR_ERROR_COMPANY_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+            return;
+        }
+    }
 }
