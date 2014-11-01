@@ -32,17 +32,22 @@ public:
 	CStatic m_LoadStatus;
 
     bool m_bEditMode;
+    bool m_bAddMode;
+
     OilDensityModal m_varOilDensityModal;
 
 	CEdit m_varIDEdit;
 	CEdit m_varDensitySummerEdit;
 	CEdit m_varDensityWinterEdit;
 	CButton m_varEditBtn;
-
-
+    CButton m_varAddBtn;
+    CButton m_varDelBtn;
 
     void EnableVarEdit(bool bEnable);
     void ResetVarEdit();
+
+    void SetVarEditBtn(bool bEnable);
+    void SetVarAddBtn(bool bEnable);
 
 	afx_msg void OnBnClickedDensityLoadBtn();
 	afx_msg void OnCbnSelchangeDensityCompanyIdCombo();
@@ -51,5 +56,5 @@ public:
 	afx_msg void OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnBnClickedDensityEditBtn();
-    
+    afx_msg void OnBnClickedDensityAddBtn();
 };

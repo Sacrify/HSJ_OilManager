@@ -12,6 +12,7 @@ IMPLEMENT_DYNAMIC(HSJ_OilDensityDlg, CDialog)
 HSJ_OilDensityDlg::HSJ_OilDensityDlg(CWnd* pParent /*=NULL*/)
     : CDialog(HSJ_OilDensityDlg::IDD, pParent)
     , m_bEditMode(false)
+    , m_bAddMode(false)
 {
 
 }
@@ -33,6 +34,8 @@ void HSJ_OilDensityDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_DENSITY_DETAIL_SUMMBER_EDIT, m_varDensitySummerEdit);
     DDX_Control(pDX, IDC_DENSITY_DETAIL_WINTER_EDIT, m_varDensityWinterEdit);
     DDX_Control(pDX, IDC_DENSITY_EDIT_BTN, m_varEditBtn);
+    DDX_Control(pDX, IDC_DENSITY_ADD_BTN, m_varAddBtn);
+    DDX_Control(pDX, IDC_DENSITY_DELETE_BTN, m_varDelBtn);
 }
 
 
@@ -43,6 +46,7 @@ BEGIN_MESSAGE_MAP(HSJ_OilDensityDlg, CDialog)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_OIL_DENSITY_LISTCONTROL, &HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol)
     ON_WM_CTLCOLOR()
     ON_BN_CLICKED(IDC_DENSITY_EDIT_BTN, &HSJ_OilDensityDlg::OnBnClickedDensityEditBtn)
+    ON_BN_CLICKED(IDC_DENSITY_ADD_BTN, &HSJ_OilDensityDlg::OnBnClickedDensityAddBtn)
 END_MESSAGE_MAP()
 
 
@@ -59,6 +63,8 @@ BOOL HSJ_OilDensityDlg::OnInitDialog()
     m_OilDensityListCtrl.InsertColumn(1, STR_UI_OIL_DENSITY_SUMMER, LVCFMT_LEFT, 200);
     m_OilDensityListCtrl.InsertColumn(2, STR_UI_OIL_DENSITY_WINTER, LVCFMT_LEFT, 200);
 
+    ResetVarEdit();
+
     return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -68,6 +74,8 @@ void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
 
     if (m_CompanyIDCombo)
     {
+        m_CompanyIDCombo.ResetContent();
+
         CompanyMap* companyMap = DBHelper::GetInstance()->GetCompanyMap();
 
         POSITION pos = companyMap->GetStartPosition();
@@ -76,16 +84,14 @@ void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
             int key = 0;
             CompanyModal cm;
             companyMap->GetNextAssoc(pos, key, cm);
-
-            CString str;
-            str.Format(STR_INT, key);
-
-            m_CompanyIDCombo.AddString(str);
+            m_CompanyIDCombo.AddString(Utils::Int2CString(key));
         }
     }
 
     if (m_OilTypeCombo)
     {
+        m_OilTypeCombo.ResetContent();
+
         OilTypeMap* oilTypeMap = DBHelper::GetInstance()->GetOilTypeMap();
 
         POSITION pos = oilTypeMap->GetStartPosition();
@@ -94,15 +100,11 @@ void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
             int key = 0;
             OilTypeModal om;
             oilTypeMap->GetNextAssoc(pos, key, om);
-
-            CString str;
-            str.Format(STR_INT, key);
-
-            m_OilTypeCombo.AddString(str);
+            m_OilTypeCombo.AddString(Utils::Int2CString(key));
         }
     }
 
-
+    RefreshOilDensityListCtrl();
 
     m_LoadStatus.SetWindowTextW(STR_LOADED);
 }
@@ -199,12 +201,10 @@ void HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRE
     {
         int nItemIndex = pNMLV->iItem;
 
+        EnableVarEdit(nItemIndex != -1);
+
         if (nItemIndex != -1)
         {
-            //m_varIDEdit.SetWindowTextW(m_OilDensityListCtrl.GetItemText(nItemIndex, 0));
-            //m_varDensitySummerEdit.SetWindowTextW(m_OilDensityListCtrl.GetItemText(nItemIndex, 1));
-            //m_varDensityWinterEdit.SetWindowTextW(m_OilDensityListCtrl.GetItemText(nItemIndex, 2));
-            
             int oilDensityID = 
                 Utils::CString2Int(m_OilDensityListCtrl.GetItemText(nItemIndex, 0));
             
@@ -233,10 +233,6 @@ HBRUSH HSJ_OilDensityDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
     HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-    // 在此更改 DC 的任何属性
-
-    // 如果默认的不是所需画笔，则返回另一个画笔
-
     if (pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_ID_EDIT ||
         pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_SUMMBER_EDIT || 
         pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_WINTER_EDIT)
@@ -251,13 +247,14 @@ HBRUSH HSJ_OilDensityDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
         }
     }
 
-
     return hbr;
 }
 
 void HSJ_OilDensityDlg::ResetVarEdit()
 {
     m_bEditMode = false;
+    m_bAddMode = false;
+
     EnableVarEdit(false);
 
     m_varIDEdit.SetWindowTextW(STR_EMPTY);
@@ -267,18 +264,52 @@ void HSJ_OilDensityDlg::ResetVarEdit()
 
 void HSJ_OilDensityDlg::EnableVarEdit(bool bEnable)
 {
-    m_varEditBtn.SetWindowTextW(bEnable ? STR_OK : STR_EDIT);
+    m_varEditBtn.EnableWindow(bEnable);
+    m_varAddBtn.EnableWindow(bEnable);
+    m_varDelBtn.EnableWindow(bEnable);
+
     m_varDensitySummerEdit.SetReadOnly(!bEnable);
     m_varDensityWinterEdit.SetReadOnly(!bEnable);
+}
+
+void HSJ_OilDensityDlg::SetVarEditBtn(bool bEnable)
+{
+    m_varEditBtn.SetWindowTextW(bEnable ? STR_OK : STR_EDIT);
+}
+
+void HSJ_OilDensityDlg::SetVarAddBtn(bool bEnable)
+{
+    m_varAddBtn.SetWindowTextW(bEnable ? STR_OK : STR_ADD);
 }
 
 void HSJ_OilDensityDlg::OnBnClickedDensityEditBtn()
 {
     m_bEditMode = !m_bEditMode;
     EnableVarEdit(m_bEditMode);
+    SetVarEditBtn(m_bEditMode);
 
     if (m_bEditMode == false)
     {
-        
+        CString windowText(STR_EMPTY);
+        m_varDensitySummerEdit.GetWindowTextW(windowText);
+        m_varOilDensityModal.m_OilDensitySummer = Utils::CString2Double(windowText);
+
+        m_varDensityWinterEdit.GetWindowTextW(windowText);
+        m_varOilDensityModal.m_OilDensityWinter = Utils::CString2Double(windowText);
+
+        bool bEditSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_UPDATE);
+        if (bEditSuc)
+        {
+            DBHelper::GetInstance()->ReloadOilDensity();
+            RefreshOilDensityListCtrl();
+        }
+
+        MessageBox(CString(STR_UPDATE_OIL_DENSITY) + (bEditSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
+            CString(STR_TIP), MB_OK);
     }
+}
+
+void HSJ_OilDensityDlg::OnBnClickedDensityAddBtn()
+{
+    
 }

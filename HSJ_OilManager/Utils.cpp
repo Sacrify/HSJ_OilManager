@@ -20,14 +20,14 @@ CString Utils::Int2CString(int num)
 
 int Utils::CString2Int(CString& str)
 {
-    return _ttoi(str);
+    return _tstoi(str);
 }
 
-CString Utils::Double2CString(double num, int point)
+CString Utils::Double2CString(double num, int decimals)
 {
     CString str(STR_EMPTY);
 
-    switch (point)
+    switch (decimals)
     {
     case 3:
     default:
@@ -35,4 +35,9 @@ CString Utils::Double2CString(double num, int point)
     }
 
     return str;
+}
+
+double Utils::CString2Double(CString& str)
+{
+    return _tstof(str);
 }

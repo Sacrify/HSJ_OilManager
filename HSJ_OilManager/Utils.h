@@ -10,7 +10,8 @@ public:
     static CString Int2CString(int num);
     static int CString2Int(CString& str);
 
-    static CString Double2CString(double num, int point);
+    static CString Double2CString(double num, int decimals);
+    static double CString2Double(CString& str);
 };
 
 
@@ -23,14 +24,7 @@ public:
 #define PROPERTY_DOUBLE(X, Y) double m_##X;     \
     CString Get##X() const                      \
     {                                           \
-        CString str(STR_EMPTY);                 \
-        switch (Y)                              \
-        {                                       \
-        case 3:                                 \
-        default:                                \
-            str.Format(STR_FLOAT_3, m_##X);     \
-        }                                       \
-        return str;                             \
+        return Utils::Double2CString(m_##X, Y); \
     }
 
 #define PROPERTY_CSTRING(X) CString m_##X;      \
