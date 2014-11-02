@@ -5,9 +5,10 @@ class CompanyTypeModal :
 	public BaseModal
 {
 public:
-	CompanyTypeModal(void);
-	virtual ~CompanyTypeModal(void);
+	CompanyTypeModal();
+	virtual ~CompanyTypeModal();
+    void Clear();
 
-	int m_CompanyTypeID;
-	CString m_CompanyTypeName;
+	PROPERTY_INT(CompanyTypeID);
+	PROPERTY_CSTRING(CompanyTypeName);
 };

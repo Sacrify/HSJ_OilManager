@@ -5,6 +5,8 @@
 class BaseModal
 {
 public:
-	BaseModal(void);
-	virtual ~BaseModal(void);
+	BaseModal();
+	virtual ~BaseModal();
+
+    virtual void Clear();
 };

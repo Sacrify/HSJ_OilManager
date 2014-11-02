@@ -5,19 +5,20 @@ class ShipRegInfoModal :
 	public BaseModal
 {
 public:
-	ShipRegInfoModal(void);
-	virtual ~ShipRegInfoModal(void);
+	ShipRegInfoModal();
+	virtual ~ShipRegInfoModal();
+    void Clear();
 
-	CString m_MMSI;
-	CString m_ShipName;
-	double m_Speed;
-	double m_LoadWeight;
-	double m_Draft;
-	int m_LlunSpeed;
-	int m_RlunSpeed;
-	CString m_Memo;
-	CString m_DeviceID;
-	double m_MaxGPS;
-	int m_CompanyID;
-	int m_OilType;
+	PROPERTY_CSTRING(MMSI);
+	PROPERTY_CSTRING(ShipName);
+	PROPERTY_DOUBLE(Speed, SPEED_DECIMALS);
+	PROPERTY_DOUBLE(LoadWeight, WEIGHT_DECIMALS);
+	PROPERTY_DOUBLE(Draft, DRAFT_DECIMALS);
+	PROPERTY_INT(LlunSpeed);
+	PROPERTY_INT(RlunSpeed);
+	PROPERTY_CSTRING(Memo);
+	PROPERTY_CSTRING(DeviceID);
+	PROPERTY_DOUBLE(MaxGPS, GPS_DECIMALS);
+	PROPERTY_INT(CompanyID);
+	PROPERTY_INT(OilType);
 };

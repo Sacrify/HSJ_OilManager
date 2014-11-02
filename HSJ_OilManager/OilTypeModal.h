@@ -5,9 +5,10 @@ class OilTypeModal :
 	public BaseModal
 {
 public:
-	OilTypeModal(void);
-	virtual ~OilTypeModal(void);
+	OilTypeModal();
+	virtual ~OilTypeModal();
+    void Clear();
 
-	int m_OilTypeID;
-	CString m_OilTypeComments;
+	PROPERTY_INT(OilTypeID);
+	PROPERTY_CSTRING(OilTypeComments);
 };

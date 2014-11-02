@@ -5,9 +5,10 @@ class UserStateModal :
 	public BaseModal
 {
 public:
-	UserStateModal(void);
-	virtual ~UserStateModal(void);
+	UserStateModal();
+	virtual ~UserStateModal();
+    void Clear();
 
-	int m_StateID;
-	CString m_StateComments;
+	PROPERTY_INT(StateID);
+	PROPERTY_CSTRING(StateComments);
 };

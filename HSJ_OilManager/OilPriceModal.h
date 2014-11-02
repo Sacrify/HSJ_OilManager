@@ -5,11 +5,12 @@ class OilPriceModal :
 	public BaseModal
 {
 public:
-	OilPriceModal(void);
-	virtual ~OilPriceModal(void);
+	OilPriceModal();
+	virtual ~OilPriceModal();
+    void Clear();
 
-	int m_OilPriceID;
+	PROPERTY_INT(OilPriceID);
     CTime m_Stime;
-	double m_Price;
-	int m_OilType;
+	PROPERTY_DOUBLE(Price, PRICE_DECIMALS);
+	PROPERTY_INT(OilType);
 };

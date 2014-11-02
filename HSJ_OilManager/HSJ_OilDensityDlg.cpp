@@ -47,6 +47,7 @@ BEGIN_MESSAGE_MAP(HSJ_OilDensityDlg, CDialog)
     ON_WM_CTLCOLOR()
     ON_BN_CLICKED(IDC_DENSITY_EDIT_BTN, &HSJ_OilDensityDlg::OnBnClickedDensityEditBtn)
     ON_BN_CLICKED(IDC_DENSITY_ADD_BTN, &HSJ_OilDensityDlg::OnBnClickedDensityAddBtn)
+    ON_BN_CLICKED(IDC_DENSITY_DELETE_BTN, &HSJ_OilDensityDlg::OnBnClickedDensityDeleteBtn)
 END_MESSAGE_MAP()
 
 
@@ -285,6 +286,7 @@ void HSJ_OilDensityDlg::ResetVarEdit()
     m_varIDEdit.SetWindowTextW(STR_EMPTY);
     m_varDensitySummerEdit.SetWindowTextW(STR_EMPTY);
     m_varDensityWinterEdit.SetWindowTextW(STR_EMPTY);
+
 }
 
 
@@ -413,14 +415,27 @@ void HSJ_OilDensityDlg::OnBnClickedDensityAddBtn()
             return;
         }
 
-        bool bEditSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_ADD);
-        if (bEditSuc)
+        bool bAddSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_ADD);
+        if (bAddSuc)
         {
             DBHelper::GetInstance()->ReloadOilDensity();
             RefreshOilDensityListCtrl();
         }
 
-        MessageBox(CString(STR_ADD_OIL_DENSITY) + (bEditSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
+        MessageBox(CString(STR_ADD_OIL_DENSITY) + (bAddSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
             CString(STR_TIP), MB_OK);
     }
+}
+
+void HSJ_OilDensityDlg::OnBnClickedDensityDeleteBtn()
+{
+    bool bDelSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_DEL);
+    if (bDelSuc)
+    {
+        DBHelper::GetInstance()->ReloadOilDensity();
+        RefreshOilDensityListCtrl();
+    }
+
+    MessageBox(CString(STR_DEL_OIL_DENSITY) + (bDelSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
+        CString(STR_TIP), MB_OK);
 }

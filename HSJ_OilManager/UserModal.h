@@ -5,14 +5,15 @@ class UserModal :
 	public BaseModal
 {
 public:
-	UserModal(void);
-	virtual ~UserModal(void);
+	UserModal();
+	virtual ~UserModal();
+    void Clear();
 
-	int m_ID;
-	CString m_UserName;
-	CString m_UserPwd;
-	int m_UserType;
-	CString m_RealName;
-	int m_State;
-	int m_CompanyID;
+	PROPERTY_INT(ID);
+	PROPERTY_CSTRING(UserName);
+	PROPERTY_CSTRING(UserPwd);
+	PROPERTY_INT(UserType);
+	PROPERTY_CSTRING(RealName);
+	PROPERTY_INT(State);
+	PROPERTY_INT(CompanyID);
 };

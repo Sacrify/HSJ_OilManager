@@ -5,12 +5,13 @@ class CompanyModal :
 	public BaseModal
 {
 public:
-	CompanyModal(void);
-	virtual ~CompanyModal(void);
+	CompanyModal();
+	virtual ~CompanyModal();
+    void Clear(); 
 
-	int m_CompanyID;
-	CString m_CompanyName;
-	int m_CompanyTypeID;
-	int m_CompanyParentID;
+	PROPERTY_INT(CompanyID);
+	PROPERTY_CSTRING(CompanyName);
+	PROPERTY_INT(CompanyTypeID);
+	PROPERTY_INT(CompanyParentID);
 };
 

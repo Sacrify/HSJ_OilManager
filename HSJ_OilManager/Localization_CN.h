@@ -2,8 +2,15 @@
 #define STR_EMPTY       _T("")
 #define STR_INT         _T("%d")
 #define STR_FLOAT_3     _T("%.3f")
+#define STR_FLOAT_2     _T("%.2f")
 
-#define DENSITY_LEN     3
+#define DENSITY_DECIMALS    3
+#define PRICE_DECIMALS      3
+#define SPEED_DECIMALS      3
+#define WEIGHT_DECIMALS     3
+#define DRAFT_DECIMALS      3
+#define GPS_DECIMALS        3
+
 
 #define STR_LOADED      _T("已加载")
 #define STR_EDIT        _T("编辑")
@@ -16,6 +23,7 @@
 
 #define STR_UPDATE_OIL_DENSITY  _T("更新油密度")
 #define STR_ADD_OIL_DENSITY     _T("新增油密度")
+#define STR_DEL_OIL_DENSITY     _T("删除油密度")
 
 #define STR_EDIT_STATUS_WARNNING    _T("当前在编辑状态，是否需要保存？")
 #define STR_ERROR_INPUT_WRONG       _T("输入参数有误")

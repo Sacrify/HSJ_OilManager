@@ -5,9 +5,10 @@ class UserTypeModal :
 	public BaseModal
 {
 public:
-	UserTypeModal(void);
-	virtual ~UserTypeModal(void);
+	UserTypeModal();
+	virtual ~UserTypeModal();
+    void Clear();
 
-	int m_UserTypeID;
-	CString m_UseTypeComments;
+	PROPERTY_INT(UserTypeID);
+	PROPERTY_CSTRING(UseTypeComments);
 };

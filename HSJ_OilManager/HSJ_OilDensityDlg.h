@@ -59,4 +59,5 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnBnClickedDensityEditBtn();
     afx_msg void OnBnClickedDensityAddBtn();
+    afx_msg void OnBnClickedDensityDeleteBtn();
 };

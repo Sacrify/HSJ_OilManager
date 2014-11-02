@@ -1,12 +1,16 @@
 #include "StdAfx.h"
 #include "UserStateModal.h"
 
-UserStateModal::UserStateModal(void)
-: m_StateID(0)
-, m_StateComments("")
+UserStateModal::UserStateModal() : BaseModal()
 {
 }
 
-UserStateModal::~UserStateModal(void)
+UserStateModal::~UserStateModal()
 {
+}
+
+void UserStateModal::Clear()
+{
+    m_StateID = 0;
+    m_StateComments.Empty();
 }

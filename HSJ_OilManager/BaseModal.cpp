@@ -1,10 +1,15 @@
 #include "StdAfx.h"
 #include "BaseModal.h"
 
-BaseModal::BaseModal(void)
+BaseModal::BaseModal()
+{
+    Clear();
+}
+
+BaseModal::~BaseModal()
 {
 }
 
-BaseModal::~BaseModal(void)
+void BaseModal::Clear()
 {
 }

@@ -1,12 +1,16 @@
 #include "StdAfx.h"
 #include "CompanyTypeModal.h"
 
-CompanyTypeModal::CompanyTypeModal(void)
-: m_CompanyTypeID(0)
-, m_CompanyTypeName("")
+CompanyTypeModal::CompanyTypeModal() : BaseModal()
 {
 }
 
-CompanyTypeModal::~CompanyTypeModal(void)
+CompanyTypeModal::~CompanyTypeModal()
 {
+}
+
+void CompanyTypeModal::Clear()
+{
+    m_CompanyTypeID = 0;
+    m_CompanyTypeName.Empty();
 }
