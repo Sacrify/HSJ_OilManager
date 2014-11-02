@@ -46,6 +46,7 @@ public:
     void EnableVarEdit(bool bEnable);
     void EnableVarEdit(bool bEnableBtn, bool bEnableEdit);
     void ResetVarEdit();
+    void ResetVarModal();
 
     void SetVarEditBtn(bool bEnable);
     void SetVarAddBtn(bool bEnable);

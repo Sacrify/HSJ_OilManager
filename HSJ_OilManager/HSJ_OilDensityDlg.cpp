@@ -286,9 +286,12 @@ void HSJ_OilDensityDlg::ResetVarEdit()
     m_varIDEdit.SetWindowTextW(STR_EMPTY);
     m_varDensitySummerEdit.SetWindowTextW(STR_EMPTY);
     m_varDensityWinterEdit.SetWindowTextW(STR_EMPTY);
-
 }
 
+void HSJ_OilDensityDlg::ResetVarModal()
+{
+    m_varOilDensityModal.Clear();
+}
 
 void HSJ_OilDensityDlg::EnableVarEdit(bool bEnable)
 {
@@ -434,6 +437,7 @@ void HSJ_OilDensityDlg::OnBnClickedDensityDeleteBtn()
     {
         DBHelper::GetInstance()->ReloadOilDensity();
         RefreshOilDensityListCtrl();
+        ResetVarModal();
     }
 
     MessageBox(CString(STR_DEL_OIL_DENSITY) + (bDelSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
