@@ -8,7 +8,6 @@
 #define IDD_HSJ_OILMANAGER_DIALOG       102
 #define IDR_MAINFRAME                   128
 #define IDD_OIL_DENSITY_DIALOG          129
-#define IDD_DIALOG1                     130
 #define IDD_OIL_PRICE_DIALOG            130
 #define IDC_BTN_PERSON                  1000
 #define IDC_BTN_SHIP                    1001
@@ -23,6 +22,7 @@
 #define IDC_OIL_DENSITY_LISTCONTROL     1010
 #define IDC_COMPANY_ID_COMBO            1011
 #define IDC_DENSITY_COMPANY_ID_COMBO    1011
+#define IDC_OIL_PRICE_ADD_BTN           1011
 #define IDC_OIL_TYPE_COMBO              1012
 #define IDC_DENSITY_OIL_TYPE_COMBO      1012
 #define IDC_COMPANY_LABEL               1013
@@ -46,7 +46,14 @@
 #define IDC_DENSITY_DETAIL_SUMMER_LABEL 1026
 #define IDC_DENSITY_DETAIL_SUMMBER_EDIT 1027
 #define IDC_DENSITY_DETAIL_WINTER_LABEL 1028
+#define IDC_OIL_PRICE_LIST_GROUPBOX     1028
 #define IDC_DENSITY_DETAIL_WINTER_EDIT  1029
+#define IDC_OIL_PRICE_LIST_LISTCONTROL  1029
+#define IDC_OIL_PRICE_DETAIL_GROUPBOX   1030
+#define IDC_OIL_PRICE_EDIT_BTN          1031
+#define IDC_OIL_PRICE_DEL_BTN           1033
+#define IDC_EDIT1                       1034
+#define IDC_OIL_PRICE_DETAIL_ID_LABEL   1035
 
 // Next default values for new objects
 // 
@@ -54,7 +61,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1028
+#define _APS_NEXT_CONTROL_VALUE         1036
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
