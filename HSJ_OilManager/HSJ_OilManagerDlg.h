@@ -3,6 +3,7 @@
 
 #pragma once
 #include "HSJ_OilDensityDlg.h"
+#include "HSJ_OilPriceDlg.h"
 
 // CHSJ_OilManagerDlg 对话框
 class CHSJ_OilManagerDlg : public CDialog
@@ -22,7 +23,8 @@ public:
 // 实现
 protected:
 	HICON m_hIcon;
-	HSJ_OilDensityDlg* m_OilDensityDlg;
+	HSJ_OilDensityDlg*  m_OilDensityDlg;
+    HSJ_OilPriceDlg*    m_OilPriceDlg;
 
 	// 生成的消息映射函数
 	virtual BOOL OnInitDialog();
@@ -33,4 +35,5 @@ protected:
 public:
 	afx_msg void OnBnClickedBtnOilDensity();
 	afx_msg void OnBnClickedMainRefresh();
+    afx_msg void OnBnClickedBtnOilPrice();
 };

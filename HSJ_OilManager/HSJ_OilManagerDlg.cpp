@@ -51,8 +51,12 @@ CHSJ_OilManagerDlg::CHSJ_OilManagerDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CHSJ_OilManagerDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
 	m_OilDensityDlg = new HSJ_OilDensityDlg();
 	m_OilDensityDlg->Create(IDD_OIL_DENSITY_DIALOG, this);
+
+    m_OilPriceDlg = new HSJ_OilPriceDlg();
+    m_OilPriceDlg->Create(IDD_OIL_PRICE_DIALOG, this);
 }
 
 CHSJ_OilManagerDlg::~CHSJ_OilManagerDlg()
@@ -62,6 +66,12 @@ CHSJ_OilManagerDlg::~CHSJ_OilManagerDlg()
 		delete m_OilDensityDlg;
 		m_OilDensityDlg = NULL;
 	}
+
+    if (m_OilPriceDlg)
+    {
+        delete m_OilPriceDlg;
+        m_OilPriceDlg = NULL;
+    }
 }
 
 void CHSJ_OilManagerDlg::DoDataExchange(CDataExchange* pDX)
@@ -77,6 +87,7 @@ BEGIN_MESSAGE_MAP(CHSJ_OilManagerDlg, CDialog)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_BTN_OIL_DENSITY, &CHSJ_OilManagerDlg::OnBnClickedBtnOilDensity)
 	ON_BN_CLICKED(IDC_MAIN_REFRESH, &CHSJ_OilManagerDlg::OnBnClickedMainRefresh)
+    ON_BN_CLICKED(IDC_BTN_OIL_PRICE, &CHSJ_OilManagerDlg::OnBnClickedBtnOilPrice)
 END_MESSAGE_MAP()
 
 
@@ -176,4 +187,13 @@ void CHSJ_OilManagerDlg::OnBnClickedBtnOilDensity()
 void CHSJ_OilManagerDlg::OnBnClickedMainRefresh()
 {
 	DBHelper::GetInstance()->ReloadAll();
+}
+
+void CHSJ_OilManagerDlg::OnBnClickedBtnOilPrice()
+{
+    if (m_OilPriceDlg)
+    {
+        m_OilPriceDlg->ShowWindow(SW_SHOWNORMAL);
+        m_OilPriceDlg->SetFocus();
+    }
 }

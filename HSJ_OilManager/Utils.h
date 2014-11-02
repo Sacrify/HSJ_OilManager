@@ -41,3 +41,4 @@ public:
     {                                               \
         return Utils::CTime2CStringDay(m_##X);      \
     }
+
