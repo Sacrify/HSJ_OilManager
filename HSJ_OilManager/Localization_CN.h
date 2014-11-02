@@ -15,6 +15,7 @@
 #define STR_TIP         _T("提示")
 
 #define STR_UPDATE_OIL_DENSITY  _T("更新油密度")
+#define STR_ADD_OIL_DENSITY     _T("新增油密度")
 
 #define STR_EDIT_STATUS_WARNNING    _T("当前在编辑状态，是否需要保存？")
 #define STR_ERROR_INPUT_WRONG       _T("输入参数有误")

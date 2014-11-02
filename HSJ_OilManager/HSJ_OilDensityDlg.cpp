@@ -412,5 +412,15 @@ void HSJ_OilDensityDlg::OnBnClickedDensityAddBtn()
             MessageBox(CString(STR_ERROR_COMPANY_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
             return;
         }
+
+        bool bEditSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_ADD);
+        if (bEditSuc)
+        {
+            DBHelper::GetInstance()->ReloadOilDensity();
+            RefreshOilDensityListCtrl();
+        }
+
+        MessageBox(CString(STR_ADD_OIL_DENSITY) + (bEditSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
+            CString(STR_TIP), MB_OK);
     }
 }
