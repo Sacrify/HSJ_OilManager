@@ -194,17 +194,32 @@ void HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo()
     RefreshOilDensityListCtrl();
 }
 
+
+void HSJ_OilDensityDlg::UnselectListCtrl()
+{
+    POSITION pos = m_OilDensityListCtrl.GetFirstSelectedItemPosition();
+    while (pos != NULL)
+    {
+        int index = m_OilDensityListCtrl.GetNextSelectedItem(pos);
+        m_OilDensityListCtrl.SetItemState(index, 0, LVIS_SELECTED | LVIS_FOCUSED);
+    }
+}
+
 void HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 
     BOOL bSelectedNow = (pNMLV->uNewState & LVIS_SELECTED);
     BOOL bSelectedBefore = (pNMLV ->uOldState & LVIS_SELECTED);
+    
+    if (!bSelectedNow && bSelectedBefore)
+    {
+        ResetVarEdit();
+    }
+
     if (bSelectedNow && !bSelectedBefore)
     {
         int nItemIndex = pNMLV->iItem;
-
-        EnableVarEdit(nItemIndex != -1);
 
         if (nItemIndex != -1)
         {
@@ -217,15 +232,19 @@ void HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRE
              {
                 if (oilDensityMap->Lookup(oilDensityID, m_varOilDensityModal))
                 {
+                    ResetVarEdit();
+
                     m_varIDEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensityID());
                     m_varDensitySummerEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensitySummer());
                     m_varDensityWinterEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensityWinter());
+
+                    EnableVarEdit(true, false);
                 }
              }
         }
         else
         {
-            ResetVarEdit();            
+            ResetVarEdit();
         }
     }
 
@@ -236,19 +255,19 @@ HBRUSH HSJ_OilDensityDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
     HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-    if (pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_ID_EDIT ||
-        pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_SUMMBER_EDIT || 
-        pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_WINTER_EDIT)
-    {
-        if (m_bEditMode)
-        {
-            pDC->SetTextColor(RGB(0, 0, 0));
-        }
-        else
-        {
-            pDC->SetTextColor(RGB(128, 128, 128));
-        }
-    }
+    //if (pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_ID_EDIT ||
+    //    pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_SUMMBER_EDIT || 
+    //    pWnd->GetDlgCtrlID() == IDC_DENSITY_DETAIL_WINTER_EDIT)
+    //{
+    //    if (m_bEditMode)
+    //    {
+    //        pDC->SetTextColor(RGB(0, 0, 0));
+    //    }
+    //    else
+    //    {
+    //        pDC->SetTextColor(RGB(128, 128, 128));
+    //    }
+    //}
 
     return hbr;
 }
@@ -267,6 +286,7 @@ void HSJ_OilDensityDlg::ResetVarEdit()
     m_varDensitySummerEdit.SetWindowTextW(STR_EMPTY);
     m_varDensityWinterEdit.SetWindowTextW(STR_EMPTY);
 }
+
 
 void HSJ_OilDensityDlg::EnableVarEdit(bool bEnable)
 {
@@ -295,9 +315,9 @@ void HSJ_OilDensityDlg::SetVarAddBtn(bool bEnable)
 
 void HSJ_OilDensityDlg::OnBnClickedDensityEditBtn()
 {
-    if (m_bEditMode)
+    if (m_bEditMode == false)
     {
-        m_bEditMode = false;
+        m_bEditMode = true;
         EnableVarEdit(m_bEditMode);
         SetVarEditBtn(m_bEditMode);
     }
@@ -348,10 +368,12 @@ void HSJ_OilDensityDlg::OnBnClickedDensityAddBtn()
         ResetVarEdit();
     }
 
-    if (m_bAddMode)
+    if (m_bAddMode == false)
     {
-        m_bAddMode = false;
-        EnableVarEdit(m_bAddMode);
+        UnselectListCtrl();
+
+        m_bAddMode = true;
+        EnableVarEdit(false, m_bAddMode);
         SetVarAddBtn(m_bAddMode);
     }
     else
