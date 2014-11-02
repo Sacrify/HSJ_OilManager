@@ -198,6 +198,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\HSJ_OilPriceDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -237,6 +241,10 @@
 			</File>
 			<File
 				RelativePath=".\HSJ_OilManagerDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\HSJ_OilPriceDlg.h"
 				>
 			</File>
 			<File

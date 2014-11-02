@@ -3,6 +3,8 @@
 #define STR_INT         _T("%d")
 #define STR_FLOAT_3     _T("%.3f")
 #define STR_FLOAT_2     _T("%.2f")
+#define STR_CTIME_DAY   _T("%Y-%m-%d")
+#define STR_CSTRING_DAY _T("%d-%d-%d")
 
 #define DENSITY_DECIMALS    3
 #define PRICE_DECIMALS      3

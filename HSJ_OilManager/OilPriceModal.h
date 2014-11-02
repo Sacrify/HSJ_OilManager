@@ -10,7 +10,7 @@ public:
     void Clear();
 
 	PROPERTY_INT(OilPriceID);
-    CTime m_Stime;
+    PROPERTY_CTIME_DAY(Stime);
 	PROPERTY_DOUBLE(Price, PRICE_DECIMALS);
 	PROPERTY_INT(OilType);
 };

@@ -12,6 +12,9 @@ public:
 
     static CString Double2CString(double num, int decimals);
     static double CString2Double(CString& str);
+
+    static CString CTime2CStringDay(CTime time);
+    static CTime CString2CTimeDay(CString& str);
 };
 
 
@@ -31,4 +34,10 @@ public:
     CString Get##X() const                      \
     {                                           \
         return m_##X;                           \
+    }
+
+#define PROPERTY_CTIME_DAY(X) CTime m_##X;          \
+    CString Get##X() const                          \
+    {                                               \
+        return Utils::CTime2CStringDay(m_##X);      \
     }
