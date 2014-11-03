@@ -11,6 +11,7 @@
 #include "CompanyModal.h"
 #include "CompanyTypeModal.h"
 #include "OilTypeModal.h"
+#include "OilPriceModal.h"
 #include "UserModal.h"
 #include "UserStateModal.h"
 #include "UserTypeModal.h"
@@ -21,6 +22,7 @@ typedef CMap<int, int, CompanyModal, CompanyModal> CompanyMap;
 
 typedef CMap<int, int, OilTypeModal, OilTypeModal> OilTypeMap;
 typedef CMap<int, int, OilDensityModal, OilDensityModal> OilDensityMap;
+typedef CMap<int, int, OilPriceModal, OilPriceModal> OilPriceMap;
 
 class DBHelper
 {
@@ -51,6 +53,8 @@ private:
 	OilTypeMap*			m_OilTypeMap;
 	OilDensityMap*		m_OilDensityMap;
 
+    OilPriceMap*        m_OilPriceMap;
+
 public:
 	~DBHelper(void);
 
@@ -75,6 +79,8 @@ public:
 
 	void ReloadOilTypeMap();
 	void ReloadOilDensityMap();
+
+    void ReloadOilPriceMap();
 
 protected:
     virtual bool SelectDB(const _bstr_t& commandLine);

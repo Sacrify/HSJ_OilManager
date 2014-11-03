@@ -52,8 +52,14 @@
 #define IDC_OIL_PRICE_DETAIL_GROUPBOX   1030
 #define IDC_OIL_PRICE_EDIT_BTN          1031
 #define IDC_OIL_PRICE_DEL_BTN           1033
-#define IDC_EDIT1                       1034
+#define IDC_OIL_PRICE_DETAIL_ID_EDIT    1034
 #define IDC_OIL_PRICE_DETAIL_ID_LABEL   1035
+#define IDC_OIL_PRICE_DETAIL_STIME_LABEL 1036
+#define IDC_OIL_PRICE_STIME_EDIT        1039
+#define IDC_OIL_PRICE_DETAIL_PRICE_LABEL 1040
+#define IDC_OIL_PRICE_DETAIL_PRICE_EDIT 1041
+#define IDC_OIL_PRICE_LOAD_BTN          1042
+#define IDC_OIL_PRICE_LOAD_STATUS_LABEL 1043
 
 // Next default values for new objects
 // 
@@ -61,7 +67,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1036
+#define _APS_NEXT_CONTROL_VALUE         1044
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

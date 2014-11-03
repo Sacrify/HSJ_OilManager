@@ -13,6 +13,8 @@ DBHelper::DBHelper(void)
 
 	m_OilTypeMap = new OilTypeMap();
 	m_OilDensityMap = new OilDensityMap();
+
+    m_OilPriceMap = new OilPriceMap();
 }
 
 DBHelper::~DBHelper(void)
@@ -346,6 +348,20 @@ void DBHelper::ReloadOilDensityMap()
 	m_pRecordset->Close();
 }
 
+void DBHelper::ReloadOilPriceMap()
+{
+	try
+	{
+    	if (SelectDB("SELECT OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter " \
+			"FROM hsj_oil_density") == false) return;
+    }
+	catch (_com_error &e)  
+	{  
+		AfxMessageBox(e.Description());
+		return;
+	}
+
+}
 
 bool DBHelper::SelectDB(const _bstr_t& commandLine)
 {
