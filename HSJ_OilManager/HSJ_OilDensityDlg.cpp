@@ -10,9 +10,8 @@
 IMPLEMENT_DYNAMIC(HSJ_OilDensityDlg, CDialog)
 
 HSJ_OilDensityDlg::HSJ_OilDensityDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(HSJ_OilDensityDlg::IDD, pParent)
-    , m_bEditMode(false)
-    , m_bAddMode(false)
+    : CDialog(HSJ_OilDensityDlg::IDD, pParent),
+    HSJ_BaseDlg()
 {
 
 }
@@ -56,7 +55,6 @@ BOOL HSJ_OilDensityDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    // TODO: Add extra initialization here
     DWORD dwExStyle = m_OilDensityListCtrl.GetExtendedStyle();
     m_OilDensityListCtrl.SetExtendedStyle(dwExStyle|LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES);
 
@@ -64,9 +62,25 @@ BOOL HSJ_OilDensityDlg::OnInitDialog()
     m_OilDensityListCtrl.InsertColumn(1, STR_UI_OIL_DENSITY_SUMMER, LVCFMT_LEFT, 200);
     m_OilDensityListCtrl.InsertColumn(2, STR_UI_OIL_DENSITY_WINTER, LVCFMT_LEFT, 200);
 
+    SetValues();
     ResetVarEdit();
 
     return TRUE;  // return TRUE  unless you set the focus to a control
+}
+
+void HSJ_OilDensityDlg::SetValues()
+{
+    m_pListCtrl = &m_OilDensityListCtrl;
+    m_pvarEditBtn = &m_varEditBtn;
+    m_pvarAddBtn = &m_varAddBtn;
+    m_pvarDelBtn = &m_varDelBtn;
+    m_pBaseModal = &m_varOilDensityModal;
+
+    m_staticEditVec.push_back(&m_varIDEdit);
+    m_varEditVec.push_back(&m_varDensitySummerEdit);
+    m_varEditVec.push_back(&m_varDensityWinterEdit);
+
+    m_dlgHWND = m_hWnd;
 }
 
 void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
@@ -151,6 +165,43 @@ void HSJ_OilDensityDlg::RefreshOilDensityListCtrl()
     }
 }
 
+bool HSJ_OilDensityDlg::UpdateModal2UI()
+{
+    m_varIDEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensityID());
+    m_varDensitySummerEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensitySummer());
+    m_varDensityWinterEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensityWinter());
+
+    return true;
+}
+
+bool HSJ_OilDensityDlg::UpdateUI2Modal(bool bNoEmpty)
+{
+    CString windowText(STR_EMPTY);
+    m_varDensitySummerEdit.GetWindowTextW(windowText);
+    m_varOilDensityModal.m_OilDensitySummer = Utils::CString2Double(windowText);
+
+    if (bNoEmpty && 
+        (windowText.GetLength() == 0 ||
+        m_varOilDensityModal.m_OilDensitySummer == 0))
+    {
+        MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+        return false;
+    }
+
+    m_varDensityWinterEdit.GetWindowTextW(windowText);
+    m_varOilDensityModal.m_OilDensityWinter = Utils::CString2Double(windowText);
+
+    if (bNoEmpty && 
+        (windowText.GetLength() == 0 ||
+        m_varOilDensityModal.m_OilDensityWinter == 0))
+    {
+        MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+        return false;
+    }
+
+    return true;
+}
+
 void HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo()
 {
     int nIndex = m_CompanyIDCombo.GetCurSel();
@@ -195,17 +246,6 @@ void HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo()
     RefreshOilDensityListCtrl();
 }
 
-
-void HSJ_OilDensityDlg::UnselectListCtrl()
-{
-    POSITION pos = m_OilDensityListCtrl.GetFirstSelectedItemPosition();
-    while (pos != NULL)
-    {
-        int index = m_OilDensityListCtrl.GetNextSelectedItem(pos);
-        m_OilDensityListCtrl.SetItemState(index, 0, LVIS_SELECTED | LVIS_FOCUSED);
-    }
-}
-
 void HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
@@ -234,11 +274,7 @@ void HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRE
                 if (oilDensityMap->Lookup(oilDensityID, m_varOilDensityModal))
                 {
                     ResetVarEdit();
-
-                    m_varIDEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensityID());
-                    m_varDensitySummerEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensitySummer());
-                    m_varDensityWinterEdit.SetWindowTextW(m_varOilDensityModal.GetOilDensityWinter());
-
+                    UpdateModal2UI();
                     EnableVarEdit(true, false);
                 }
              }
@@ -273,164 +309,88 @@ HBRUSH HSJ_OilDensityDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
     return hbr;
 }
 
-void HSJ_OilDensityDlg::ResetVarEdit()
-{
-    m_bEditMode = false;
-    m_bAddMode = false;
-
-    EnableVarEdit(false);
-
-    SetVarEditBtn(false);
-    SetVarAddBtn(false);
-
-    m_varIDEdit.SetWindowTextW(STR_EMPTY);
-    m_varDensitySummerEdit.SetWindowTextW(STR_EMPTY);
-    m_varDensityWinterEdit.SetWindowTextW(STR_EMPTY);
-}
-
-void HSJ_OilDensityDlg::ResetVarModal()
-{
-    m_varOilDensityModal.Clear();
-}
-
-void HSJ_OilDensityDlg::EnableVarEdit(bool bEnable)
-{
-    EnableVarEdit(bEnable, bEnable);
-}
-
-void HSJ_OilDensityDlg::EnableVarEdit(bool bEnableBtn, bool bEnableEdit)
-{
-    m_varEditBtn.EnableWindow(bEnableBtn);
-//    m_varAddBtn.EnableWindow(bEnableBtn);
-    m_varDelBtn.EnableWindow(bEnableBtn);
-
-    m_varDensitySummerEdit.SetReadOnly(!bEnableEdit);
-    m_varDensityWinterEdit.SetReadOnly(!bEnableEdit);
-}
-
-void HSJ_OilDensityDlg::SetVarEditBtn(bool bEnable)
-{
-    m_varEditBtn.SetWindowTextW(bEnable ? STR_OK : STR_EDIT);
-}
-
-void HSJ_OilDensityDlg::SetVarAddBtn(bool bEnable)
-{
-    m_varAddBtn.SetWindowTextW(bEnable ? STR_OK : STR_ADD);
-}
-
 void HSJ_OilDensityDlg::OnBnClickedDensityEditBtn()
 {
-    if (m_bEditMode == false)
+    OnEditBtnClick();
+}
+
+bool HSJ_OilDensityDlg::PrepareEdit()
+{
+    return UpdateUI2Modal(true);
+}
+
+bool HSJ_OilDensityDlg::DoEdit()
+{
+    bool bEditSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_UPDATE);
+    if (bEditSuc)
     {
-        m_bEditMode = true;
-        EnableVarEdit(m_bEditMode);
-        SetVarEditBtn(m_bEditMode);
+        DBHelper::GetInstance()->ReloadOilDensity();
+        RefreshOilDensityListCtrl();
     }
-    else
-    {
-        CString windowText(STR_EMPTY);
-        m_varDensitySummerEdit.GetWindowTextW(windowText);
-        m_varOilDensityModal.m_OilDensitySummer = Utils::CString2Double(windowText);
 
-        if (windowText.GetLength() == 0 ||
-            m_varOilDensityModal.m_OilDensitySummer == 0)
-        {
-            MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
-            return;
-        }
+    MessageBox(CString(STR_UPDATE_OIL_DENSITY) + (bEditSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
+        CString(STR_TIP), MB_OK);
 
-        m_varDensityWinterEdit.GetWindowTextW(windowText);
-        m_varOilDensityModal.m_OilDensityWinter = Utils::CString2Double(windowText);
-
-        if (windowText.GetLength() == 0 ||
-            m_varOilDensityModal.m_OilDensityWinter == 0)
-        {
-            MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
-            return;
-        }
-
-        bool bEditSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_UPDATE);
-        if (bEditSuc)
-        {
-            DBHelper::GetInstance()->ReloadOilDensity();
-            RefreshOilDensityListCtrl();
-        }
-
-        MessageBox(CString(STR_UPDATE_OIL_DENSITY) + (bEditSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
-            CString(STR_TIP), MB_OK);
-    }
+    return bEditSuc;
 }
 
 void HSJ_OilDensityDlg::OnBnClickedDensityAddBtn()
 {
-    if (m_bEditMode)
+    OnAddBtnClick();
+}
+
+bool HSJ_OilDensityDlg::PrepareAdd()
+{
+    UpdateUI2Modal(false);
+
+    if (m_varOilDensityModal.m_OilDensitySummer == 0 || 
+        m_varOilDensityModal.m_OilDensityWinter == 0)
     {
-        if (IDYES == MessageBox(CString(STR_EDIT_STATUS_WARNNING), CString(STR_TIP), MB_ICONWARNING | MB_YESNO))
-        {
-            OnBnClickedDensityEditBtn();
-        }
-        
-        ResetVarEdit();
+        MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+        return false;
     }
 
-    if (m_bAddMode == false)
+    if (CB_ERR == m_CompanyIDCombo.GetCurSel())
     {
-        UnselectListCtrl();
-
-        m_bAddMode = true;
-        EnableVarEdit(false, m_bAddMode);
-        SetVarAddBtn(m_bAddMode);
+        MessageBox(CString(STR_ERROR_COMPANY_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+        return false;
     }
-    else
+
+    if (CB_ERR == m_OilTypeCombo.GetCurSel())
     {
-        m_varOilDensityModal.m_OilDensityID = 0;
-
-        CString windowText(STR_EMPTY);
-        m_varDensitySummerEdit.GetWindowTextW(windowText);
-        m_varOilDensityModal.m_OilDensitySummer = Utils::CString2Double(windowText);
-
-        if (windowText.GetLength() == 0 ||
-            m_varOilDensityModal.m_OilDensitySummer == 0)
-        {
-            MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
-            return;
-        }
-
-        m_varDensityWinterEdit.GetWindowTextW(windowText);
-        m_varOilDensityModal.m_OilDensityWinter = Utils::CString2Double(windowText);
-
-        if (windowText.GetLength() == 0 ||
-            m_varOilDensityModal.m_OilDensityWinter == 0)
-        {
-            MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
-            return;
-        }
-
-        if (CB_ERR == m_CompanyIDCombo.GetCurSel())
-        {
-            MessageBox(CString(STR_ERROR_COMPANY_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
-            return;
-        }
-        
-        if (CB_ERR == m_OilTypeCombo.GetCurSel())
-        {
-            MessageBox(CString(STR_ERROR_COMPANY_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
-            return;
-        }
-
-        bool bAddSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_ADD);
-        if (bAddSuc)
-        {
-            DBHelper::GetInstance()->ReloadOilDensity();
-            RefreshOilDensityListCtrl();
-        }
-
-        MessageBox(CString(STR_ADD_OIL_DENSITY) + (bAddSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
-            CString(STR_TIP), MB_OK);
+        MessageBox(CString(STR_ERROR_OIL_TYPE_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+        return false;
     }
+
+    return true;
+}
+
+bool HSJ_OilDensityDlg::DoAdd()
+{
+    bool bAddSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_ADD);
+    if (bAddSuc)
+    {
+        DBHelper::GetInstance()->ReloadOilDensity();
+        RefreshOilDensityListCtrl();
+    }
+
+    MessageBox(CString(STR_ADD_OIL_DENSITY) + (bAddSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
+        CString(STR_TIP), MB_OK);
+
+    return bAddSuc;
 }
 
 void HSJ_OilDensityDlg::OnBnClickedDensityDeleteBtn()
+{
+    OnDelBtnClick();
+}
+
+bool HSJ_OilDensityDlg::PrepareDel()
+{
+    return true;
+}
+
+bool HSJ_OilDensityDlg::DoDel()
 {
     bool bDelSuc = DBHelper::GetInstance()->UpdateOilDensity(m_varOilDensityModal, DBHelper::DB_ACT_DEL);
     if (bDelSuc)
@@ -442,4 +402,6 @@ void HSJ_OilDensityDlg::OnBnClickedDensityDeleteBtn()
 
     MessageBox(CString(STR_DEL_OIL_DENSITY) + (bDelSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
         CString(STR_TIP), MB_OK);
+
+    return bDelSuc;
 }

@@ -2,15 +2,15 @@
 #include "basemodal.h"
 
 class OilPriceModal :
-	public BaseModal
+    public BaseModal
 {
 public:
-	OilPriceModal();
-	virtual ~OilPriceModal();
+    OilPriceModal();
+    virtual ~OilPriceModal();
     void Clear();
 
-	PROPERTY_INT(OilPriceID);
+    PROPERTY_INT(OilPriceID);
     PROPERTY_CTIME_DAY(Stime);
-	PROPERTY_DOUBLE(Price, PRICE_DECIMALS);
-	PROPERTY_INT(OilType);
+    PROPERTY_DOUBLE(Price, PRICE_DECIMALS);
+    PROPERTY_INT(OilType);
 };

@@ -3,7 +3,7 @@
 
 CompanyModal::CompanyModal() : BaseModal()
 {
-	
+    
 }
 
 CompanyModal::~CompanyModal()

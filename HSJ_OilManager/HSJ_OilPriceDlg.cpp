@@ -11,7 +11,7 @@
 IMPLEMENT_DYNAMIC(HSJ_OilPriceDlg, CDialog)
 
 HSJ_OilPriceDlg::HSJ_OilPriceDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(HSJ_OilPriceDlg::IDD, pParent)
+    : CDialog(HSJ_OilPriceDlg::IDD, pParent)
 {
 
 }

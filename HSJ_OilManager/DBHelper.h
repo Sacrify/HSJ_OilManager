@@ -39,46 +39,46 @@ public:
     } DB_ACT;
 
 private:
-	DBHelper(void);
-	static DBHelper*	m_pInstance;
+    DBHelper(void);
+    static DBHelper*    m_pInstance;
 
     // Here we have no stored procedure, 
     // So only use connectionPtr and recordsetPrt 
-	_ConnectionPtr		m_pConnection; 
-	_RecordsetPtr		m_pRecordset;
+    _ConnectionPtr        m_pConnection; 
+    _RecordsetPtr        m_pRecordset;
 
-	CompanyTypeMap*		m_CompanyTypeMap;
-	CompanyMap*			m_CompanyMap;
+    CompanyTypeMap*        m_CompanyTypeMap;
+    CompanyMap*            m_CompanyMap;
 
-	OilTypeMap*			m_OilTypeMap;
-	OilDensityMap*		m_OilDensityMap;
+    OilTypeMap*            m_OilTypeMap;
+    OilDensityMap*        m_OilDensityMap;
 
     OilPriceMap*        m_OilPriceMap;
 
 public:
-	~DBHelper(void);
+    ~DBHelper(void);
 
 public:
-	static DBHelper* GetInstance();
+    static DBHelper* GetInstance();
 
-	CompanyTypeMap*		GetCompanyTypeMap();
-	CompanyMap*			GetCompanyMap();
+    CompanyTypeMap*        GetCompanyTypeMap();
+    CompanyMap*            GetCompanyMap();
 
-	OilTypeMap*			GetOilTypeMap();
-	OilDensityMap*		GetOilDensityMap();
+    OilTypeMap*            GetOilTypeMap();
+    OilDensityMap*        GetOilDensityMap();
 
-	bool InitInstance();
-	bool OpenDB();
+    bool InitInstance();
+    bool OpenDB();
 
-	void ReloadAll();
-	void ReloadOilDensity();
+    void ReloadAll();
+    void ReloadOilDensity();
 
-	
-	void ReloadCompanyTypeMap();
-	void ReloadCompanyMap();
+    
+    void ReloadCompanyTypeMap();
+    void ReloadCompanyMap();
 
-	void ReloadOilTypeMap();
-	void ReloadOilDensityMap();
+    void ReloadOilTypeMap();
+    void ReloadOilDensityMap();
 
     void ReloadOilPriceMap();
 

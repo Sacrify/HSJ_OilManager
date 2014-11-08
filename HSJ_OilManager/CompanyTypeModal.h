@@ -2,13 +2,13 @@
 #include "basemodal.h"
 
 class CompanyTypeModal :
-	public BaseModal
+    public BaseModal
 {
 public:
-	CompanyTypeModal();
-	virtual ~CompanyTypeModal();
+    CompanyTypeModal();
+    virtual ~CompanyTypeModal();
     void Clear();
 
-	PROPERTY_INT(CompanyTypeID);
-	PROPERTY_CSTRING(CompanyTypeName);
+    PROPERTY_INT(CompanyTypeID);
+    PROPERTY_CSTRING(CompanyTypeName);
 };

@@ -17,7 +17,7 @@
 #define STR_LOADED      _T("已加载")
 #define STR_EDIT        _T("编辑")
 #define STR_ADD         _T("新增")
-#define STR_OK	        _T("确定")
+#define STR_OK            _T("确定")
 #define STR_CANCEL      _T("取消")
 #define STR_SUCCESS     _T("成功")
 #define STR_FAILED      _T("失败")

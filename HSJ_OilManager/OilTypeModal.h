@@ -2,13 +2,13 @@
 #include "basemodal.h"
 
 class OilTypeModal :
-	public BaseModal
+    public BaseModal
 {
 public:
-	OilTypeModal();
-	virtual ~OilTypeModal();
+    OilTypeModal();
+    virtual ~OilTypeModal();
     void Clear();
 
-	PROPERTY_INT(OilTypeID);
-	PROPERTY_CSTRING(OilTypeComments);
+    PROPERTY_INT(OilTypeID);
+    PROPERTY_CSTRING(OilTypeComments);
 };

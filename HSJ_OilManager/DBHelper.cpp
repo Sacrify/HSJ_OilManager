@@ -8,358 +8,358 @@
 
 DBHelper::DBHelper(void)
 {
-	m_CompanyTypeMap = new CompanyTypeMap();
-	m_CompanyMap = new CompanyMap();
+    m_CompanyTypeMap = new CompanyTypeMap();
+    m_CompanyMap = new CompanyMap();
 
-	m_OilTypeMap = new OilTypeMap();
-	m_OilDensityMap = new OilDensityMap();
+    m_OilTypeMap = new OilTypeMap();
+    m_OilDensityMap = new OilDensityMap();
 
     m_OilPriceMap = new OilPriceMap();
 }
 
 DBHelper::~DBHelper(void)
 {
-	if (m_pConnection)
-	{
-		if (m_pConnection->GetState() == adStateOpen)
-		{
-			m_pConnection->Close();
-		}
+    if (m_pConnection)
+    {
+        if (m_pConnection->GetState() == adStateOpen)
+        {
+            m_pConnection->Close();
+        }
 
-		m_pConnection.Release();
-		m_pConnection = NULL;
-	}
+        m_pConnection.Release();
+        m_pConnection = NULL;
+    }
 
-	if (m_CompanyTypeMap)
-	{
-		delete m_CompanyTypeMap;
-		m_CompanyTypeMap = NULL;
-	}
+    if (m_CompanyTypeMap)
+    {
+        delete m_CompanyTypeMap;
+        m_CompanyTypeMap = NULL;
+    }
 
-	if (m_CompanyMap)
-	{
-		delete m_CompanyMap;
-		m_CompanyMap = NULL;
-	}
+    if (m_CompanyMap)
+    {
+        delete m_CompanyMap;
+        m_CompanyMap = NULL;
+    }
 
-	if (m_OilTypeMap)
-	{
-		delete m_OilTypeMap;
-		m_OilTypeMap = NULL;
-	}
+    if (m_OilTypeMap)
+    {
+        delete m_OilTypeMap;
+        m_OilTypeMap = NULL;
+    }
 
-	if (m_OilDensityMap)
-	{
-		delete m_OilDensityMap;
-		m_OilDensityMap = NULL;
-	}
+    if (m_OilDensityMap)
+    {
+        delete m_OilDensityMap;
+        m_OilDensityMap = NULL;
+    }
 }
 
 DBHelper* DBHelper::m_pInstance = NULL;
 DBHelper* DBHelper::GetInstance()
 {
-	if (m_pInstance == NULL)
-	{
-		m_pInstance = new DBHelper();
-	}
+    if (m_pInstance == NULL)
+    {
+        m_pInstance = new DBHelper();
+    }
 
-	return m_pInstance;
+    return m_pInstance;
 }
 
 bool DBHelper::InitInstance()
 {
-	if (AfxOleInit() == false)
-	{
-		AfxMessageBox(_T("OLE Initialzation Fail!"));
-		return false;
-	}
-
-	try
-	{
-		if (FAILED(m_pConnection.CreateInstance("ADODB.Connection")))
-		{
-			AfxMessageBox(_T("Create ADODB Connection Fail!"));
-			return false;
-		}
-	}
-	catch (_com_error &e)  
-    {  
-        AfxMessageBox(e.Description());
-		return false;
+    if (AfxOleInit() == false)
+    {
+        AfxMessageBox(_T("OLE Initialzation Fail!"));
+        return false;
     }
 
-	try
-	{
-		if(FAILED(m_pRecordset.CreateInstance("ADODB.Recordset")))
-		{
-			AfxMessageBox(_T("Create ADODB Recordset Fail!"));
-			return false;
-		}
-	}
-	catch (_com_error &e)  
+    try
+    {
+        if (FAILED(m_pConnection.CreateInstance("ADODB.Connection")))
+        {
+            AfxMessageBox(_T("Create ADODB Connection Fail!"));
+            return false;
+        }
+    }
+    catch (_com_error &e)  
     {  
         AfxMessageBox(e.Description());
-		return false;
+        return false;
     }
 
-	return true;
+    try
+    {
+        if(FAILED(m_pRecordset.CreateInstance("ADODB.Recordset")))
+        {
+            AfxMessageBox(_T("Create ADODB Recordset Fail!"));
+            return false;
+        }
+    }
+    catch (_com_error &e)  
+    {  
+        AfxMessageBox(e.Description());
+        return false;
+    }
+
+    return true;
 }
 
 CompanyTypeMap* DBHelper::GetCompanyTypeMap()
 {
-	return m_CompanyTypeMap;
+    return m_CompanyTypeMap;
 }
 
 CompanyMap* DBHelper::GetCompanyMap()
 {
-	return m_CompanyMap;
+    return m_CompanyMap;
 }
 
 OilTypeMap* DBHelper::GetOilTypeMap()
 {
-	return m_OilTypeMap;
+    return m_OilTypeMap;
 }
 
 OilDensityMap* DBHelper::GetOilDensityMap()
 {
-	return m_OilDensityMap;
+    return m_OilDensityMap;
 }
 
 bool DBHelper::OpenDB()
 {
-	if (m_pConnection)
-	{
-		if (m_pConnection->GetState() != adStateOpen)
-		{
-			try
-			{
-				return 
-					(SUCCEEDED(
-					m_pConnection->Open(
-					"Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=OilDB;Data Source=.",
-					"",
-					"",
-					adModeUnknown)));///连接数据库
-			}
-			catch (_com_error &e)  
-			{  
-				AfxMessageBox(e.Description());
-				return false;
-			}
-		}
-		else
-		{
-			return true;
-		}
-	}
+    if (m_pConnection)
+    {
+        if (m_pConnection->GetState() != adStateOpen)
+        {
+            try
+            {
+                return 
+                    (SUCCEEDED(
+                    m_pConnection->Open(
+                    "Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=OilDB;Data Source=.",
+                    "",
+                    "",
+                    adModeUnknown)));///连接数据库
+            }
+            catch (_com_error &e)  
+            {  
+                AfxMessageBox(e.Description());
+                return false;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
 
-	return false;
+    return false;
 }
 
 void DBHelper::ReloadAll()
 {
-	ReloadCompanyTypeMap();
-	ReloadCompanyMap();
+    ReloadCompanyTypeMap();
+    ReloadCompanyMap();
 
-	ReloadOilTypeMap();
-	ReloadOilDensityMap();
+    ReloadOilTypeMap();
+    ReloadOilDensityMap();
 }
 
 void DBHelper::ReloadOilDensity()
 {
-	ReloadCompanyTypeMap();
-	ReloadCompanyMap();
+    ReloadCompanyTypeMap();
+    ReloadCompanyMap();
 
-	ReloadOilTypeMap();
-	ReloadOilDensityMap();
+    ReloadOilTypeMap();
+    ReloadOilDensityMap();
 }
 
 void DBHelper::ReloadCompanyTypeMap()
 {
-	try
-	{
-	    if (SelectDB("SELECT CompanyTypeID, CompanyTypeName " \
+    try
+    {
+        if (SelectDB("SELECT CompanyTypeID, CompanyTypeName " \
             "FROM hsj_company_type") == false) return;
-	}
-	catch (_com_error &e)  
-	{  
-		AfxMessageBox(e.Description());
-		return;
-	}
+    }
+    catch (_com_error &e)  
+    {  
+        AfxMessageBox(e.Description());
+        return;
+    }
 
-	if (m_CompanyTypeMap) m_CompanyTypeMap->RemoveAll();
+    if (m_CompanyTypeMap) m_CompanyTypeMap->RemoveAll();
 
-	while (!m_pRecordset->ADOEOF)
-	{
-		_variant_t CompanyTypeID, CompanyTypeName;
+    while (!m_pRecordset->ADOEOF)
+    {
+        _variant_t CompanyTypeID, CompanyTypeName;
 
-		try
-		{
-			CompanyTypeID = m_pRecordset->GetCollect("CompanyTypeID");
-			CompanyTypeName = m_pRecordset->GetCollect("CompanyTypeName");
+        try
+        {
+            CompanyTypeID = m_pRecordset->GetCollect("CompanyTypeID");
+            CompanyTypeName = m_pRecordset->GetCollect("CompanyTypeName");
 
-			CompanyTypeModal ctm;
-			ctm.m_CompanyTypeID = CompanyTypeID.intVal;
-			ctm.m_CompanyTypeName = CompanyTypeName.bstrVal;
+            CompanyTypeModal ctm;
+            ctm.m_CompanyTypeID = CompanyTypeID.intVal;
+            ctm.m_CompanyTypeName = CompanyTypeName.bstrVal;
 
-			m_CompanyTypeMap->SetAt(ctm.m_CompanyTypeID, ctm);
-		}
-		catch (_com_error &e)  
-		{  
-			AfxMessageBox(e.Description());
-		}
+            m_CompanyTypeMap->SetAt(ctm.m_CompanyTypeID, ctm);
+        }
+        catch (_com_error &e)  
+        {  
+            AfxMessageBox(e.Description());
+        }
 
-		m_pRecordset->MoveNext();
-	}
+        m_pRecordset->MoveNext();
+    }
 
-	m_pRecordset->Close();
+    m_pRecordset->Close();
 }
 
 void DBHelper::ReloadCompanyMap()
 {
-	try
-	{
-	    if (SelectDB("SELECT CompanyID, CompanyName, CompanyTypeID, CompanyParentID " \
-			"FROM hsj_company") == false) return;
-	}
-	catch (_com_error &e)  
-	{  
-		AfxMessageBox(e.Description());
-		return;
-	}
+    try
+    {
+        if (SelectDB("SELECT CompanyID, CompanyName, CompanyTypeID, CompanyParentID " \
+            "FROM hsj_company") == false) return;
+    }
+    catch (_com_error &e)  
+    {  
+        AfxMessageBox(e.Description());
+        return;
+    }
 
-	if (m_CompanyMap) m_CompanyMap->RemoveAll();
+    if (m_CompanyMap) m_CompanyMap->RemoveAll();
 
-	while (!m_pRecordset->ADOEOF)
-	{
-		_variant_t CompanyID, CompanyName, CompanyTypeID, CompanyParentID;
+    while (!m_pRecordset->ADOEOF)
+    {
+        _variant_t CompanyID, CompanyName, CompanyTypeID, CompanyParentID;
 
-		try
-		{
-			CompanyID = m_pRecordset->GetCollect("CompanyID");
-			CompanyName = m_pRecordset->GetCollect("CompanyName");
-			CompanyTypeID = m_pRecordset->GetCollect("CompanyTypeID");
-			CompanyParentID = m_pRecordset->GetCollect("CompanyParentID");
+        try
+        {
+            CompanyID = m_pRecordset->GetCollect("CompanyID");
+            CompanyName = m_pRecordset->GetCollect("CompanyName");
+            CompanyTypeID = m_pRecordset->GetCollect("CompanyTypeID");
+            CompanyParentID = m_pRecordset->GetCollect("CompanyParentID");
 
-			CompanyModal cm;
-			cm.m_CompanyID = CompanyID.intVal;
-			cm.m_CompanyName = CompanyName.bstrVal;
-			cm.m_CompanyTypeID = CompanyTypeID.intVal;
-			cm.m_CompanyParentID = CompanyParentID.intVal;
+            CompanyModal cm;
+            cm.m_CompanyID = CompanyID.intVal;
+            cm.m_CompanyName = CompanyName.bstrVal;
+            cm.m_CompanyTypeID = CompanyTypeID.intVal;
+            cm.m_CompanyParentID = CompanyParentID.intVal;
 
-			m_CompanyMap->SetAt(cm.m_CompanyID, cm);
-		}
-		catch (_com_error &e)  
-		{  
-			AfxMessageBox(e.Description());
-		}
+            m_CompanyMap->SetAt(cm.m_CompanyID, cm);
+        }
+        catch (_com_error &e)  
+        {  
+            AfxMessageBox(e.Description());
+        }
 
-		m_pRecordset->MoveNext();
-	}
+        m_pRecordset->MoveNext();
+    }
 
-	m_pRecordset->Close();
+    m_pRecordset->Close();
 }
 
 void DBHelper::ReloadOilTypeMap()
 {
-	try
-	{
-    	if (SelectDB("SELECT OilTypeID, OilTypeComments " \
-			"FROM hsj_oil_type") == false) return;
+    try
+    {
+        if (SelectDB("SELECT OilTypeID, OilTypeComments " \
+            "FROM hsj_oil_type") == false) return;
     }
-	catch (_com_error &e)  
-	{  
-		AfxMessageBox(e.Description());
-		return;
-	}
+    catch (_com_error &e)  
+    {  
+        AfxMessageBox(e.Description());
+        return;
+    }
 
-	if (m_OilTypeMap) m_OilTypeMap->RemoveAll();
+    if (m_OilTypeMap) m_OilTypeMap->RemoveAll();
 
-	while (!m_pRecordset->ADOEOF)
-	{
-		_variant_t OilTypeID, OilTypeComments;
+    while (!m_pRecordset->ADOEOF)
+    {
+        _variant_t OilTypeID, OilTypeComments;
 
-		try
-		{
-			OilTypeID = m_pRecordset->GetCollect("OilTypeID");
-			OilTypeComments = m_pRecordset->GetCollect("OilTypeComments");
+        try
+        {
+            OilTypeID = m_pRecordset->GetCollect("OilTypeID");
+            OilTypeComments = m_pRecordset->GetCollect("OilTypeComments");
 
-			OilTypeModal otm;
-			otm.m_OilTypeID = OilTypeID.intVal;
-			otm.m_OilTypeComments = OilTypeComments.bstrVal;
+            OilTypeModal otm;
+            otm.m_OilTypeID = OilTypeID.intVal;
+            otm.m_OilTypeComments = OilTypeComments.bstrVal;
 
-			m_OilTypeMap->SetAt(otm.m_OilTypeID, otm);
-		}
-		catch (_com_error &e)  
-		{  
-			AfxMessageBox(e.Description());
-		}
+            m_OilTypeMap->SetAt(otm.m_OilTypeID, otm);
+        }
+        catch (_com_error &e)  
+        {  
+            AfxMessageBox(e.Description());
+        }
 
-		m_pRecordset->MoveNext();
-	}
+        m_pRecordset->MoveNext();
+    }
 
-	m_pRecordset->Close();
+    m_pRecordset->Close();
 }
 
 void DBHelper::ReloadOilDensityMap()
 {
-	try
-	{
-    	if (SelectDB("SELECT OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter " \
-			"FROM hsj_oil_density") == false) return;
+    try
+    {
+        if (SelectDB("SELECT OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter " \
+            "FROM hsj_oil_density") == false) return;
     }
-	catch (_com_error &e)  
-	{  
-		AfxMessageBox(e.Description());
-		return;
-	}
+    catch (_com_error &e)  
+    {  
+        AfxMessageBox(e.Description());
+        return;
+    }
 
-	if (m_OilDensityMap) m_OilDensityMap->RemoveAll();
+    if (m_OilDensityMap) m_OilDensityMap->RemoveAll();
 
-	while (!m_pRecordset->ADOEOF)
-	{
-		_variant_t OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter;
+    while (!m_pRecordset->ADOEOF)
+    {
+        _variant_t OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter;
 
-		try
-		{
-			OilDensityID = m_pRecordset->GetCollect("OilDensityID");
-			CompanyID = m_pRecordset->GetCollect("CompanyID");
-			OilTypeID = m_pRecordset->GetCollect("OilTypeID");
-			OilDensitySummer = m_pRecordset->GetCollect("OilDensitySummer");
-			OilDensityWinter = m_pRecordset->GetCollect("OilDensityWinter");
+        try
+        {
+            OilDensityID = m_pRecordset->GetCollect("OilDensityID");
+            CompanyID = m_pRecordset->GetCollect("CompanyID");
+            OilTypeID = m_pRecordset->GetCollect("OilTypeID");
+            OilDensitySummer = m_pRecordset->GetCollect("OilDensitySummer");
+            OilDensityWinter = m_pRecordset->GetCollect("OilDensityWinter");
 
-			OilDensityModal odm;
-			odm.m_OilDensityID = OilDensityID.intVal;
-			odm.m_CompanyID = CompanyID.intVal;
-			odm.m_OilTypeID = OilTypeID.intVal;
-			odm.m_OilDensitySummer = OilDensitySummer.dblVal;
-			odm.m_OilDensityWinter = OilDensityWinter.dblVal;
+            OilDensityModal odm;
+            odm.m_OilDensityID = OilDensityID.intVal;
+            odm.m_CompanyID = CompanyID.intVal;
+            odm.m_OilTypeID = OilTypeID.intVal;
+            odm.m_OilDensitySummer = OilDensitySummer.dblVal;
+            odm.m_OilDensityWinter = OilDensityWinter.dblVal;
 
-			m_OilDensityMap->SetAt(odm.m_OilDensityID, odm);
-		}
-		catch (_com_error &e)  
-		{  
-			AfxMessageBox(e.Description());
-		}
+            m_OilDensityMap->SetAt(odm.m_OilDensityID, odm);
+        }
+        catch (_com_error &e)  
+        {  
+            AfxMessageBox(e.Description());
+        }
 
-		m_pRecordset->MoveNext();
-	}
+        m_pRecordset->MoveNext();
+    }
 
-	m_pRecordset->Close();
+    m_pRecordset->Close();
 }
 
 void DBHelper::ReloadOilPriceMap()
 {
-	try
-	{
-    	if (SelectDB("SELECT OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter " \
-			"FROM hsj_oil_density") == false) return;
+    try
+    {
+        if (SelectDB("SELECT OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter " \
+            "FROM hsj_oil_density") == false) return;
     }
-	catch (_com_error &e)  
-	{  
-		AfxMessageBox(e.Description());
-		return;
-	}
+    catch (_com_error &e)  
+    {  
+        AfxMessageBox(e.Description());
+        return;
+    }
 
 }
 
@@ -376,11 +376,11 @@ bool DBHelper::SelectDB(const _bstr_t& commandLine)
             &RecordsAffected,
             adCmdText);
     }
-	catch (_com_error &e)  
-	{  
-		AfxMessageBox(e.Description());
-		return false;
-	}
+    catch (_com_error &e)  
+    {  
+        AfxMessageBox(e.Description());
+        return false;
+    }
 
     return true;
 }
@@ -398,11 +398,11 @@ bool DBHelper::UpdateDB(const _bstr_t& commandLine)
             &RecordsAffected,
             adCmdText);
     }
-	catch (_com_error &e)  
-	{  
-		AfxMessageBox(e.Description());
-		return false;
-	}
+    catch (_com_error &e)  
+    {  
+        AfxMessageBox(e.Description());
+        return false;
+    }
 
     return true;
 }
