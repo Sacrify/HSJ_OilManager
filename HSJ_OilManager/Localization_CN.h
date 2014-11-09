@@ -17,7 +17,7 @@
 #define STR_LOADED      _T("已加载")
 #define STR_EDIT        _T("编辑")
 #define STR_ADD         _T("新增")
-#define STR_OK            _T("确定")
+#define STR_OK          _T("确定")
 #define STR_CANCEL      _T("取消")
 #define STR_SUCCESS     _T("成功")
 #define STR_FAILED      _T("失败")
@@ -33,7 +33,13 @@
 #define STR_ERROR_OIL_TYPE_WRONG    _T("未选油类型")
 
 
-#define STR_UI_OIL_DENSITY_ID       _T("OilDensityID")
-#define STR_UI_OIL_DENSITY_SUMMER   _T("OilDensitySummer")
-#define STR_UI_OIL_DENSITY_WINTER   _T("OilDensityWiner")
+#define STR_UI_OIL_DENSITY_ID       _T("油密度ID")
+#define STR_UI_OIL_DENSITY_SUMMER   _T("夏季油密度")
+#define STR_UI_OIL_DENSITY_WINTER   _T("冬季油密度")
+
+#define STR_UI_OIL_PRICE_ID         _T("油价ID")
+#define STR_UI_OIL_PRICE_STIME      _T("油价开始时间")
+#define STR_UI_OIL_PRICE_PRICE      _T("油价")
+#define STR_UI_OIL_PRICE_OIL_TYPE   _T("油类型")
+
 

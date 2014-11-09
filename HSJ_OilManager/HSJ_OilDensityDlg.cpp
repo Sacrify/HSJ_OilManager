@@ -55,14 +55,13 @@ BOOL HSJ_OilDensityDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    DWORD dwExStyle = m_OilDensityListCtrl.GetExtendedStyle();
-    m_OilDensityListCtrl.SetExtendedStyle(dwExStyle|LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES);
+    SetValues();
+    SetListReport();
 
     m_OilDensityListCtrl.InsertColumn(0, STR_UI_OIL_DENSITY_ID, LVCFMT_LEFT, 100);
     m_OilDensityListCtrl.InsertColumn(1, STR_UI_OIL_DENSITY_SUMMER, LVCFMT_LEFT, 200);
-    m_OilDensityListCtrl.InsertColumn(2, STR_UI_OIL_DENSITY_WINTER, LVCFMT_LEFT, 200);
+    m_OilDensityListCtrl.InsertColumn(2, STR_UI_OIL_DENSITY_WINTER, LVCFMT_LEFT, 200);    
 
-    SetValues();
     ResetVarEdit();
 
     return TRUE;  // return TRUE  unless you set the focus to a control

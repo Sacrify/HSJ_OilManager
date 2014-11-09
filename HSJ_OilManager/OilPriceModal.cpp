@@ -14,5 +14,5 @@ void OilPriceModal::Clear()
     m_OilPriceID = 0;
     m_Stime = CTime::GetCurrentTime();
     m_Price = 0;
-    m_OilType = 0;
+    m_OilTypeID = 0;
 }

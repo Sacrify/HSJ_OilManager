@@ -18,6 +18,15 @@ HSJ_BaseDlg::~HSJ_BaseDlg()
 {
 }
 
+void HSJ_BaseDlg::SetListReport()
+{
+    if (m_pListCtrl)
+    {
+        DWORD dwExStyle = m_pListCtrl->GetExtendedStyle();
+        m_pListCtrl->SetExtendedStyle(dwExStyle|LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES);
+    }
+}
+
 void HSJ_BaseDlg::SetValues()
 {
 }

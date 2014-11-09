@@ -174,6 +174,13 @@ void DBHelper::ReloadOilDensity()
     ReloadOilDensityMap();
 }
 
+void DBHelper::ReloadOilPrice()
+{
+    ReloadOilTypeMap();
+    ReloadOilPriceMap();
+}
+
+
 void DBHelper::ReloadCompanyTypeMap()
 {
     try
@@ -335,7 +342,7 @@ void DBHelper::ReloadOilDensityMap()
             odm.m_OilDensitySummer = OilDensitySummer.dblVal;
             odm.m_OilDensityWinter = OilDensityWinter.dblVal;
 
-            m_OilDensityMap->SetAt(odm.m_OilDensityID, odm);
+            if (m_OilDensityMap) m_OilDensityMap->SetAt(odm.m_OilDensityID, odm);
         }
         catch (_com_error &e)  
         {  
@@ -352,8 +359,8 @@ void DBHelper::ReloadOilPriceMap()
 {
     try
     {
-        if (SelectDB("SELECT OilDensityID, CompanyID, OilTypeID, OilDensitySummer, OilDensityWinter " \
-            "FROM hsj_oil_density") == false) return;
+        if (SelectDB("SELECT OilPriceID, stime, price, OilTypeID " \
+                "FROM hsj_oil_price") == false) return;
     }
     catch (_com_error &e)  
     {  
@@ -361,6 +368,36 @@ void DBHelper::ReloadOilPriceMap()
         return;
     }
 
+    if (m_OilPriceMap) m_OilPriceMap->RemoveAll();
+
+    while (!m_pRecordset->ADOEOF)
+    {
+        _variant_t OilPriceID, stime, price, OilTypeID;
+
+        try
+        {
+            OilPriceID = m_pRecordset->GetCollect("OilPriceID");
+            stime = m_pRecordset->GetCollect("stime");
+            price = m_pRecordset->GetCollect("price");
+            OilTypeID = m_pRecordset->GetCollect("OilTypeID");
+
+            OilPriceModal opm;
+            opm.m_OilPriceID = OilPriceID.intVal;
+            opm.m_Stime = Utils::Variant2CTimeDay(stime);
+            opm.m_Price = price.dblVal;
+            opm.m_OilTypeID = OilTypeID.intVal;
+
+            if (m_OilPriceMap) m_OilPriceMap->SetAt(opm.m_OilPriceID, opm);
+        }
+        catch (_com_error &e)
+        {  
+            AfxMessageBox(e.Description());
+        }
+
+        m_pRecordset->MoveNext();
+    }
+
+    m_pRecordset->Close();
 }
 
 bool DBHelper::SelectDB(const _bstr_t& commandLine)

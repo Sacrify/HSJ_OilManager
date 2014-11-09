@@ -56,3 +56,11 @@ CTime Utils::CString2CTimeDay(CString& str)
     }
     return GetCurrentTime();
 }
+
+CTime Utils::Variant2CTimeDay(_variant_t& vt)
+{
+    COleDateTime timeTmp(vt);
+    SYSTEMTIME st;
+    VariantTimeToSystemTime(timeTmp, &st);
+    return CTime(st);
+}

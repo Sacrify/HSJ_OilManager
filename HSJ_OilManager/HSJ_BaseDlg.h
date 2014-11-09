@@ -26,6 +26,7 @@ public:
     HWND m_dlgHWND;
 
 public:
+    virtual void SetListReport();
     virtual void SetValues();
 
     virtual void EnableVarEdit(bool bEnable);
