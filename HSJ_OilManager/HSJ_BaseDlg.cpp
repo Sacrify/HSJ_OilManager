@@ -83,7 +83,7 @@ void HSJ_BaseDlg::SetVarAddBtn(bool bEnable)
     m_pvarAddBtn->SetWindowTextW(bEnable ? STR_OK : STR_ADD);
 }
 
-void HSJ_BaseDlg::RefreshOilDensityListCtrl()
+void HSJ_BaseDlg::RefreshListCtrl()
 {
 
 }

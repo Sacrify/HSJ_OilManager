@@ -78,7 +78,23 @@ void HSJ_OilPriceDlg::SetValues()
 
 void HSJ_OilPriceDlg::OnBnClickedOilPriceLoadBtn()
 {
-    
+    DBHelper::GetInstance()->ReloadOilPrice();
+
+    m_OilTypeCombo.ResetContent();
+
+    OilTypeMap* oilTypeMap = DBHelper::GetInstance()->GetOilTypeMap();
+
+    POSITION pos = oilTypeMap->GetStartPosition();
+    while (pos != NULL)
+    {
+        int key = 0;
+        OilTypeModal om;
+        oilTypeMap->GetNextAssoc(pos, key, om);
+        m_OilTypeCombo.AddString(Utils::Int2CString(key));
+    }
+
+    RefreshListCtrl();
+    m_LoadStatusLabel.SetWindowTextW(STR_LOADED);
 }
 
 void HSJ_OilPriceDlg::OnBnClickedOilPriceEditBtn()

@@ -47,7 +47,7 @@ public:
     afx_msg void OnCbnSelchangeDensityCompanyIdCombo();
     afx_msg void OnCbnSelchangeDensityOilTypeCombo();
     
-    virtual void RefreshOilDensityListCtrl();
+    virtual void RefreshListCtrl();
     virtual bool UpdateModal2UI();
     virtual bool UpdateUI2Modal(bool bNoEmpty);
 

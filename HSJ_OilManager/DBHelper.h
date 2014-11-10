@@ -89,5 +89,5 @@ protected:
 
 public:
     bool UpdateOilDensity(const OilDensityModal& modal, DB_ACT act);
-
+    bool UpdateOilPrice(const OilPriceModal& modal, DB_ACT act);
 };

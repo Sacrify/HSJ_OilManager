@@ -2,7 +2,8 @@
 #include "afxwin.h"
 #include "afxcmn.h"
 #include "HSJ_BaseDlg.h"
-#include "OilPriceModal.h"
+#include "DBHelper.h"
+
 
 // HSJ_OilPriceDlg ¶Ô»°¿ò
 

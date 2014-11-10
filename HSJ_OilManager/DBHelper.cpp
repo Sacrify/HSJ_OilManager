@@ -486,5 +486,49 @@ bool DBHelper::UpdateOilDensity(const OilDensityModal& modal, DB_ACT act)
         break;
     }
 
-    return UpdateDB((_bstr_t)commandLine);
+    if (commandLine != STR_EMPTY) return UpdateDB((_bstr_t)commandLine);
+    else return false;
 }
+
+bool DBHelper::UpdateOilPrice(const OilPriceModal& modal, DB_ACT act)
+{
+    CString commandLine = STR_EMPTY;
+
+    switch (act)
+    {
+    case DB_ACT_UPDATE:
+        {
+            commandLine = 
+                CString("UPDATE hsj_oil_price ") + 
+                CString("SET ") + 
+                CString("stime = '") + modal.GetStime() + CString("', ") + 
+                CString("price = ") + modal.GetPrice() + CString(" ") + 
+                CString("WHERE ") + 
+                CString("OilPriceID = ") + modal.GetOilPriceID();
+        }
+        break;
+
+    case DB_ACT_ADD:
+        {
+            commandLine = 
+                CString("INSERT INTO hsj_oil_price (stime, price, OilTypeID) ") + 
+                CString("VALUES ( ") + 
+                CString("'") + modal.GetStime() + "', " + 
+                modal.GetPrice() + ", " +
+                modal.GetOilTypeID() + CString(" )");
+        }
+        break;
+
+    case DB_ACT_DEL:
+        {
+            commandLine = 
+                CString("DELETE FROM hsj_oil_price WHERE OilPriceID = ") + 
+                modal.GetOilPriceID();
+        }
+        break;
+    }
+
+    if (commandLine != STR_EMPTY) return UpdateDB((_bstr_t)commandLine);
+    else return false;
+}
+

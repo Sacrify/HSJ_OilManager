@@ -113,12 +113,12 @@ void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
         m_OilTypeCombo.AddString(Utils::Int2CString(key));
     }
 
-    RefreshOilDensityListCtrl();
+    RefreshListCtrl();
 
     m_LoadStatus.SetWindowTextW(STR_LOADED);
 }
 
-void HSJ_OilDensityDlg::RefreshOilDensityListCtrl()
+void HSJ_OilDensityDlg::RefreshListCtrl()
 {
     if (m_OilDensityListCtrl)
     {
@@ -220,7 +220,7 @@ void HSJ_OilDensityDlg::OnCbnSelchangeDensityCompanyIdCombo()
         m_CompanyNameLabel.SetWindowTextW(cm.m_CompanyName);
     }
 
-    RefreshOilDensityListCtrl();
+    RefreshListCtrl();
 }
 
 void HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo()
@@ -242,7 +242,7 @@ void HSJ_OilDensityDlg::OnCbnSelchangeDensityOilTypeCombo()
         m_OilTypeLabel.SetWindowTextW(om.m_OilTypeComments);
     }
 
-    RefreshOilDensityListCtrl();
+    RefreshListCtrl();
 }
 
 void HSJ_OilDensityDlg::OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRESULT *pResult)
@@ -324,7 +324,7 @@ bool HSJ_OilDensityDlg::DoEdit()
     if (bEditSuc)
     {
         DBHelper::GetInstance()->ReloadOilDensity();
-        RefreshOilDensityListCtrl();
+        RefreshListCtrl();
     }
 
     MessageBox(CString(STR_UPDATE_OIL_DENSITY) + (bEditSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
@@ -370,7 +370,7 @@ bool HSJ_OilDensityDlg::DoAdd()
     if (bAddSuc)
     {
         DBHelper::GetInstance()->ReloadOilDensity();
-        RefreshOilDensityListCtrl();
+        RefreshListCtrl();
     }
 
     MessageBox(CString(STR_ADD_OIL_DENSITY) + (bAddSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
@@ -395,7 +395,7 @@ bool HSJ_OilDensityDlg::DoDel()
     if (bDelSuc)
     {
         DBHelper::GetInstance()->ReloadOilDensity();
-        RefreshOilDensityListCtrl();
+        RefreshListCtrl();
         ResetVarModal();
     }
 

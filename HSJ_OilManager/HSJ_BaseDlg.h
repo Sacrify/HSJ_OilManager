@@ -37,7 +37,7 @@ public:
     virtual void SetVarEditBtn(bool bEnable);
     virtual void SetVarAddBtn(bool bEnable);
 
-    virtual void RefreshOilDensityListCtrl();
+    virtual void RefreshListCtrl();
     virtual void UnselectListCtrl();
 
     virtual bool UpdateModal2UI();
