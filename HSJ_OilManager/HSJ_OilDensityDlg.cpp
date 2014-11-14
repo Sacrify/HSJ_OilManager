@@ -120,47 +120,44 @@ void HSJ_OilDensityDlg::OnBnClickedDensityLoadBtn()
 
 void HSJ_OilDensityDlg::RefreshListCtrl()
 {
-    if (m_OilDensityListCtrl)
+    m_OilDensityListCtrl.DeleteAllItems();
+    ResetVarEdit();
+
+    int nIndex = m_CompanyIDCombo.GetCurSel();
+    if (nIndex == -1) return;
+    CString strCompanyID = STR_EMPTY;
+    m_CompanyIDCombo.GetLBText(nIndex, strCompanyID);
+    if (strCompanyID.GetLength() == 0) return;
+    int companyID = Utils::CString2Int(strCompanyID);
+
+    nIndex = m_OilTypeCombo.GetCurSel();
+    if (nIndex == -1) return;
+    CString strTypeID = STR_EMPTY;
+    m_OilTypeCombo.GetLBText(nIndex, strTypeID);
+    if (strTypeID.GetLength() == 0) return;
+    int typeID = _ttoi(strTypeID);
+
+    OilDensityMap* oilDensityMap = DBHelper::GetInstance()->GetOilDensityMap();
+
+    POSITION pos = oilDensityMap->GetStartPosition();
+    while (pos != NULL)
     {
-        m_OilDensityListCtrl.DeleteAllItems();
-        ResetVarEdit();
+        int key = 0;
+        OilDensityModal odm;
+        oilDensityMap->GetNextAssoc(pos, key, odm);
 
-        int nIndex = m_CompanyIDCombo.GetCurSel();
-        if (nIndex == -1) return;
-        CString strCompanyID = STR_EMPTY;
-        m_CompanyIDCombo.GetLBText(nIndex, strCompanyID);
-        if (strCompanyID.GetLength() == 0) return;
-        int companyID = Utils::CString2Int(strCompanyID);
+        if (odm.m_CompanyID != companyID || 
+            odm.m_OilTypeID != typeID) continue;
 
-        nIndex = m_OilTypeCombo.GetCurSel();
-        if (nIndex == -1) return;
-        CString strTypeID = STR_EMPTY;
-        m_OilTypeCombo.GetLBText(nIndex, strTypeID);
-        if (strTypeID.GetLength() == 0) return;
-        int typeID = _ttoi(strTypeID);
+        CString str;
+        str.Format(STR_INT, key);
+        int nRow = m_OilDensityListCtrl.InsertItem(0, str);
 
-        OilDensityMap* oilDensityMap = DBHelper::GetInstance()->GetOilDensityMap();
+        str.Format(STR_FLOAT_3, odm.m_OilDensitySummer);
+        m_OilDensityListCtrl.SetItemText(nRow, 1, str);
 
-        POSITION pos = oilDensityMap->GetStartPosition();
-        while (pos != NULL)
-        {
-            int key = 0;
-            OilDensityModal odm;
-            oilDensityMap->GetNextAssoc(pos, key, odm);
-
-            if (odm.m_CompanyID != companyID || 
-                odm.m_OilTypeID != typeID) continue;
-
-            CString str;
-            str.Format(STR_INT, key);
-            int nRow = m_OilDensityListCtrl.InsertItem(0, str);
-
-            str.Format(STR_FLOAT_3, odm.m_OilDensitySummer);
-            m_OilDensityListCtrl.SetItemText(nRow, 1, str);
-
-            str.Format(STR_FLOAT_3, odm.m_OilDensityWinter);
-            m_OilDensityListCtrl.SetItemText(nRow, 2, str);
-        }
+        str.Format(STR_FLOAT_3, odm.m_OilDensityWinter);
+        m_OilDensityListCtrl.SetItemText(nRow, 2, str);
     }
 }
 

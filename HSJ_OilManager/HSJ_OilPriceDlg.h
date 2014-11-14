@@ -38,6 +38,9 @@ public:
     OilPriceModal m_varOilPriceModal;
 
     virtual void SetValues();
+    virtual void RefreshListCtrl();
+    virtual bool UpdateModal2UI();
+    virtual bool UpdateUI2Modal(bool bNoEmpty);
 
     afx_msg void OnBnClickedOilPriceLoadBtn();
     afx_msg void OnBnClickedOilPriceEditBtn();

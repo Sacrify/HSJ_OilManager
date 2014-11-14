@@ -66,6 +66,7 @@ public:
 
     OilTypeMap*             GetOilTypeMap();
     OilDensityMap*          GetOilDensityMap();
+    OilPriceMap*            GetOilPriceMap();
 
     bool InitInstance();
     bool OpenDB();

@@ -125,6 +125,11 @@ OilDensityMap* DBHelper::GetOilDensityMap()
     return m_OilDensityMap;
 }
 
+OilPriceMap* DBHelper::GetOilPriceMap()
+{
+    return m_OilPriceMap;
+}
+
 bool DBHelper::OpenDB()
 {
     if (m_pConnection)

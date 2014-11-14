@@ -42,14 +42,13 @@ public:
     CButton m_varDelBtn;
 
     virtual void SetValues();
+    virtual void RefreshListCtrl();
+    virtual bool UpdateModal2UI();
+    virtual bool UpdateUI2Modal(bool bNoEmpty);
 
     afx_msg void OnBnClickedDensityLoadBtn();
     afx_msg void OnCbnSelchangeDensityCompanyIdCombo();
     afx_msg void OnCbnSelchangeDensityOilTypeCombo();
-    
-    virtual void RefreshListCtrl();
-    virtual bool UpdateModal2UI();
-    virtual bool UpdateUI2Modal(bool bNoEmpty);
 
     afx_msg void OnLvnItemchangedOilDensityListcontrol(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);

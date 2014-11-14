@@ -76,6 +76,32 @@ void HSJ_OilPriceDlg::SetValues()
     m_dlgHWND = m_hWnd;
 }
 
+void HSJ_OilPriceDlg::RefreshListCtrl()
+{
+    m_OilPriceListCtrl.DeleteAllItems();
+    ResetVarEdit();
+
+    int nIndex = m_OilTypeCombo.GetCurSel();
+    if (nIndex == -1) return;
+    CString strTypeID = STR_EMPTY;
+    m_OilTypeCombo.GetLBText(nIndex, strTypeID);
+    if (strTypeID.GetLength() == 0) return;
+    int typeID = _ttoi(strTypeID);
+
+    
+}
+
+bool HSJ_OilPriceDlg::UpdateModal2UI()
+{
+    return false;
+}
+
+bool HSJ_OilPriceDlg::UpdateUI2Modal(bool bNoEmpty)
+{
+    return false;
+}
+
+
 void HSJ_OilPriceDlg::OnBnClickedOilPriceLoadBtn()
 {
     DBHelper::GetInstance()->ReloadOilPrice();
