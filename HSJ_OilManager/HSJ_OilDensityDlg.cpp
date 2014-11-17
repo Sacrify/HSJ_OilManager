@@ -149,15 +149,9 @@ void HSJ_OilDensityDlg::RefreshListCtrl()
         if (odm.m_CompanyID != companyID || 
             odm.m_OilTypeID != typeID) continue;
 
-        CString str;
-        str.Format(STR_INT, key);
-        int nRow = m_OilDensityListCtrl.InsertItem(0, str);
-
-        str.Format(STR_FLOAT_3, odm.m_OilDensitySummer);
-        m_OilDensityListCtrl.SetItemText(nRow, 1, str);
-
-        str.Format(STR_FLOAT_3, odm.m_OilDensityWinter);
-        m_OilDensityListCtrl.SetItemText(nRow, 2, str);
+        int nRow = m_OilDensityListCtrl.InsertItem(0, Utils::Int2CString(key));
+        m_OilDensityListCtrl.SetItemText(nRow, 1, odm.GetOilDensitySummer());
+        m_OilDensityListCtrl.SetItemText(nRow, 2, odm.GetOilDensityWinter());
     }
 }
 

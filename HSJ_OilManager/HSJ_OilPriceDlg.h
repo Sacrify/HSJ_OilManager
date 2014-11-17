@@ -16,7 +16,7 @@ public:
     virtual ~HSJ_OilPriceDlg();
 
 // 对话框数据
-    enum { IDD = IDD_PRICE_DIALOG };
+    enum { IDD = IDD_OIL_PRICE_DIALOG };
 
 protected:
     virtual BOOL OnInitDialog();
@@ -43,9 +43,19 @@ public:
     virtual bool UpdateUI2Modal(bool bNoEmpty);
 
     afx_msg void OnBnClickedOilPriceLoadBtn();
+    afx_msg void OnCbnSelchangePriceOilTypeCombo();
+
     afx_msg void OnBnClickedOilPriceEditBtn();
+    virtual bool PrepareEdit();
+    virtual bool DoEdit();
+
     afx_msg void OnBnClickedOilPriceAddBtn();
+    virtual bool PrepareAdd();
+    virtual bool DoAdd();
+
     afx_msg void OnBnClickedOilPriceDelBtn();
+    virtual bool PrepareDel();
+    virtual bool DoDel();
 
-
+    afx_msg void OnLvnItemchangedPriceListListcontrol(NMHDR *pNMHDR, LRESULT *pResult);
 };

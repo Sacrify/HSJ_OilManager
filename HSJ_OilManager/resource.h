@@ -9,7 +9,6 @@
 #define IDR_MAINFRAME                   128
 #define IDD_OIL_DENSITY_DIALOG          129
 #define IDD_OIL_PRICE_DIALOG            130
-#define IDD_PRICE_DIALOG                130
 #define IDC_BTN_PERSON                  1000
 #define IDC_BTN_SHIP                    1001
 #define IDC_BTN_COMPANY                 1002
@@ -71,7 +70,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1047
+#define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

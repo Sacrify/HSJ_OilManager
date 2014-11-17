@@ -52,7 +52,7 @@ CTime Utils::CString2CTimeDay(CString& str)
     int nYear = 0, nMonth = 0, nDay = 0;
     if (-1 != _stscanf_s(str, STR_CSTRING_DAY, &nYear, &nMonth, &nDay))
     {
-        return CTime(nYear, nMonth, nDay);
+        return CTime(nYear, nMonth, nDay, 0, 0, 0);
     }
     return GetCurrentTime();
 }

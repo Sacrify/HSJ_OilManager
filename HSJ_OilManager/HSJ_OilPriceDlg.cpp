@@ -56,6 +56,8 @@ BEGIN_MESSAGE_MAP(HSJ_OilPriceDlg, CDialog)
     ON_BN_CLICKED(IDC_PRICE_EDIT_BTN, &HSJ_OilPriceDlg::OnBnClickedOilPriceEditBtn)
     ON_BN_CLICKED(IDC_PRICE_ADD_BTN, &HSJ_OilPriceDlg::OnBnClickedOilPriceAddBtn)
     ON_BN_CLICKED(IDC_PRICE_DEL_BTN, &HSJ_OilPriceDlg::OnBnClickedOilPriceDelBtn)
+    ON_CBN_SELCHANGE(IDC_PRICE_OIL_TYPE_COMBO, &HSJ_OilPriceDlg::OnCbnSelchangePriceOilTypeCombo)
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_PRICE_LIST_LISTCONTROL, &HSJ_OilPriceDlg::OnLvnItemchangedPriceListListcontrol)
 END_MESSAGE_MAP()
 
 
@@ -88,17 +90,54 @@ void HSJ_OilPriceDlg::RefreshListCtrl()
     if (strTypeID.GetLength() == 0) return;
     int typeID = _ttoi(strTypeID);
 
-    
+    OilPriceMap* oilPriceMap = DBHelper::GetInstance()->GetOilPriceMap();
+
+    POSITION pos = oilPriceMap->GetStartPosition();
+    while (pos != NULL)
+    {
+        int key = 0;
+        OilPriceModal opm;
+        oilPriceMap->GetNextAssoc(pos, key, opm);
+
+        if (opm.m_OilTypeID != typeID) continue;
+
+        int nRow = m_OilPriceListCtrl.InsertItem(0, Utils::Int2CString(key));
+        m_OilPriceListCtrl.SetItemText(nRow, 1, opm.GetStime());
+        m_OilPriceListCtrl.SetItemText(nRow, 2, opm.GetPrice());
+    }
 }
 
 bool HSJ_OilPriceDlg::UpdateModal2UI()
 {
-    return false;
+    m_varIDEdit.SetWindowTextW(m_varOilPriceModal.GetOilPriceID());
+    m_varSTimeEdit.SetWindowTextW(m_varOilPriceModal.GetStime());
+    m_varPriceEdit.SetWindowTextW(m_varOilPriceModal.GetPrice());
+
+    return true;
 }
 
 bool HSJ_OilPriceDlg::UpdateUI2Modal(bool bNoEmpty)
 {
-    return false;
+    CString windowText(STR_EMPTY);
+    m_varSTimeEdit.GetWindowTextW(windowText);
+    if (bNoEmpty && 
+        windowText.GetLength() == 0)
+    {
+        MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+        return false;
+    }
+    m_varOilPriceModal.m_Stime = Utils::CString2CTimeDay(windowText);
+
+    m_varPriceEdit.GetWindowTextW(windowText);
+    if (bNoEmpty && 
+        windowText.GetLength() == 0)
+    {
+        MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+        return false;
+    }
+    m_varOilPriceModal.m_Price = Utils::CString2Double(windowText);
+
+    return true;
 }
 
 
@@ -125,15 +164,154 @@ void HSJ_OilPriceDlg::OnBnClickedOilPriceLoadBtn()
 
 void HSJ_OilPriceDlg::OnBnClickedOilPriceEditBtn()
 {
-    
+    OnEditBtnClick();
+}
+
+bool HSJ_OilPriceDlg::PrepareEdit()
+{
+    return UpdateUI2Modal(true);
+}
+
+bool HSJ_OilPriceDlg::DoEdit()
+{
+    bool bEditSuc = DBHelper::GetInstance()->UpdateOilPrice(m_varOilPriceModal, DBHelper::DB_ACT_UPDATE);
+    if (bEditSuc)
+    {
+        DBHelper::GetInstance()->ReloadOilPrice();
+        RefreshListCtrl();
+    }
+
+    MessageBox(CString(STR_UPDATE_OIL_PRICE) + (bEditSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
+        CString(STR_TIP), MB_OK);
+
+    return bEditSuc;
 }
 
 void HSJ_OilPriceDlg::OnBnClickedOilPriceAddBtn()
 {
-    
+    OnAddBtnClick();
+}
+
+bool HSJ_OilPriceDlg::PrepareAdd()
+{
+    UpdateUI2Modal(false);
+
+    if (m_varOilPriceModal.m_Price == 0)
+    {
+        MessageBox(CString(STR_ERROR_INPUT_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+        return false;
+    }
+
+    if (CB_ERR == m_OilTypeCombo.GetCurSel())
+    {
+        MessageBox(CString(STR_ERROR_OIL_TYPE_WRONG), CString(STR_TIP), MB_ICONWARNING | MB_OK);
+        return false;
+    }
+
+    return true;
+}
+
+bool HSJ_OilPriceDlg::DoAdd()
+{
+    bool bAddSuc = DBHelper::GetInstance()->UpdateOilPrice(m_varOilPriceModal, DBHelper::DB_ACT_ADD);
+    if (bAddSuc)
+    {
+        DBHelper::GetInstance()->ReloadOilPrice();
+        RefreshListCtrl();
+    }
+
+    MessageBox(CString(STR_ADD_OIL_PRICE) + (bAddSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
+        CString(STR_TIP), MB_OK);
+
+    return bAddSuc;
 }
 
 void HSJ_OilPriceDlg::OnBnClickedOilPriceDelBtn()
 {
+    OnDelBtnClick();
+}
+
+bool HSJ_OilPriceDlg::PrepareDel()
+{
+    return true;
+}
+
+bool HSJ_OilPriceDlg::DoDel()
+{
+    bool bDelSuc = DBHelper::GetInstance()->UpdateOilPrice(m_varOilPriceModal, DBHelper::DB_ACT_DEL);
+    if (bDelSuc)
+    {
+        DBHelper::GetInstance()->ReloadOilPrice();
+        RefreshListCtrl();
+        ResetVarModal();
+    }
+
+    MessageBox(CString(STR_DEL_OIL_PRICE) + (bDelSuc ? CString(STR_SUCCESS) : CString(STR_FAILED)), 
+        CString(STR_TIP), MB_OK);
+
+    return bDelSuc;
+}
+
+void HSJ_OilPriceDlg::OnCbnSelchangePriceOilTypeCombo()
+{
+    int nIndex = m_OilTypeCombo.GetCurSel();
+    if (nIndex == CB_ERR) return;
+
+    CString strTypeID = STR_EMPTY;
+    m_OilTypeCombo.GetLBText(nIndex, strTypeID);
+
+    int typeID = Utils::CString2Int(strTypeID);
+    m_varOilPriceModal.m_OilTypeID = typeID;
+
+    OilTypeMap* oilTypeMap = DBHelper::GetInstance()->GetOilTypeMap();
+    OilTypeModal om;
+
+    if (oilTypeMap->Lookup(typeID, om))
+    {
+        m_OilTypeLabel.SetWindowTextW(om.m_OilTypeComments);
+    }
+
+    RefreshListCtrl();
+}
+
+void HSJ_OilPriceDlg::OnLvnItemchangedPriceListListcontrol(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+
+    BOOL bSelectedNow = (pNMLV->uNewState & LVIS_SELECTED);
+    BOOL bSelectedBefore = (pNMLV ->uOldState & LVIS_SELECTED);
     
+    if (!bSelectedNow && bSelectedBefore)
+    {
+        ResetVarEdit();
+    }
+
+    if (bSelectedNow && !bSelectedBefore)
+    {
+        int nItemIndex = pNMLV->iItem;
+
+        if (nItemIndex != -1)
+        {
+            int oilPriceID = 
+                Utils::CString2Int(m_OilPriceListCtrl.GetItemText(nItemIndex, 0));
+
+            OilPriceMap* oilPriceMap = DBHelper::GetInstance()->GetOilPriceMap();
+
+            if (oilPriceMap != NULL)
+            {
+                if (oilPriceMap->Lookup(oilPriceID, m_varOilPriceModal))
+                {
+                    ResetVarEdit();
+                    UpdateModal2UI();
+                    EnableVarEdit(true, false);
+                }
+            }
+        }
+        else
+        {
+            ResetVarEdit();
+        }
+    }
+
+    *pResult = 0;
 }
