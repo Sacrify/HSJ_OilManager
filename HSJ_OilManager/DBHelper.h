@@ -23,6 +23,8 @@ typedef CMap<int, int, CompanyModal, CompanyModal> CompanyMap;
 typedef CMap<int, int, OilTypeModal, OilTypeModal> OilTypeMap;
 typedef CMap<int, int, OilDensityModal, OilDensityModal> OilDensityMap;
 typedef CMap<int, int, OilPriceModal, OilPriceModal> OilPriceMap;
+typedef CMap<int, int, ShipRegInfoModal, ShipRegInfoModal> ShipMap;
+typedef CList<ShipRegInfoModal, ShipRegInfoModal> ShipList;
 
 class DBHelper
 {
@@ -54,6 +56,7 @@ private:
     OilDensityMap*          m_OilDensityMap;
 
     OilPriceMap*            m_OilPriceMap;
+    ShipMap*                m_ShipMap;
 
 public:
     ~DBHelper(void);
@@ -67,6 +70,7 @@ public:
     OilTypeMap*             GetOilTypeMap();
     OilDensityMap*          GetOilDensityMap();
     OilPriceMap*            GetOilPriceMap();
+    ShipMap*                GetShipMap();
 
     bool InitInstance();
     bool OpenDB();
@@ -74,6 +78,7 @@ public:
     void ReloadAll();
     void ReloadOilDensity();
     void ReloadOilPrice();
+    void ReloadShip();
 
     
     void ReloadCompanyTypeMap();
@@ -81,8 +86,9 @@ public:
 
     void ReloadOilTypeMap();
     void ReloadOilDensityMap();
-
     void ReloadOilPriceMap();
+
+    void ReloadShipMap();
 
 protected:
     virtual bool SelectDB(const _bstr_t& commandLine);

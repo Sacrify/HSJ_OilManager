@@ -15,6 +15,7 @@ DBHelper::DBHelper(void)
     m_OilDensityMap = new OilDensityMap();
 
     m_OilPriceMap = new OilPriceMap();
+    m_ShipMap = new ShipMap();
 }
 
 DBHelper::~DBHelper(void)
@@ -52,6 +53,12 @@ DBHelper::~DBHelper(void)
     {
         delete m_OilDensityMap;
         m_OilDensityMap = NULL;
+    }
+
+    if (m_ShipMap)
+    {
+        delete m_ShipMap;
+        m_ShipMap = NULL;
     }
 }
 
@@ -130,6 +137,11 @@ OilPriceMap* DBHelper::GetOilPriceMap()
     return m_OilPriceMap;
 }
 
+ShipMap* DBHelper::GetShipMap()
+{
+    return m_ShipMap;
+}
+
 bool DBHelper::OpenDB()
 {
     if (m_pConnection)
@@ -185,6 +197,12 @@ void DBHelper::ReloadOilPrice()
     ReloadOilPriceMap();
 }
 
+void DBHelper::ReloadShip()
+{
+    ReloadCompanyTypeMap();
+    ReloadCompanyMap();
+    ReloadShipMap();
+}
 
 void DBHelper::ReloadCompanyTypeMap()
 {
@@ -403,6 +421,11 @@ void DBHelper::ReloadOilPriceMap()
     }
 
     m_pRecordset->Close();
+}
+
+void DBHelper::ReloadShipMap()
+{
+    
 }
 
 bool DBHelper::SelectDB(const _bstr_t& commandLine)

@@ -9,6 +9,7 @@
 #define IDR_MAINFRAME                   128
 #define IDD_OIL_DENSITY_DIALOG          129
 #define IDD_OIL_PRICE_DIALOG            130
+#define IDD_SHIP_MANAGE_DIALOG          131
 #define IDC_BTN_PERSON                  1000
 #define IDC_BTN_SHIP                    1001
 #define IDC_BTN_COMPANY                 1002
@@ -63,14 +64,26 @@
 #define IDC_PRICE_OIL_TYPE_LABEL        1044
 #define IDC_PRICE_OIL_TYPE_COMBO        1045
 #define IDC_PRICE_OIL_TYPE_CONTENT_LABEL 1046
+#define IDC_SHIP_MARINE_DEPARTMENT_GROUPBOX 1048
+#define IDC_SHIP_LIST_GROUPBOX          1049
+#define IDC_SHIP_LIST_LISTCONTROL       1051
+#define IDC_SHIP_DETAIL_GROUPBOX        1052
+#define IDC_SHIP_ADD_BTN                1053
+#define IDC_SHIP_EDIT_BTN               1054
+#define IDC_SHIP_DEL_BTN                1055
+#define IDC_SHIP_MARINE_DEPARTMENT_LABEL 1056
+#define IDC_MARINE_DEPARTMENT_COMBO     1057
+#define IDC_BUTTON4                     1058
+#define IDC_SHIP_LOAD_BTN               1058
+#define IDC_SHIP_LOAD_STATUS_LABEL      1059
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        131
+#define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1048
+#define _APS_NEXT_CONTROL_VALUE         1060
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
