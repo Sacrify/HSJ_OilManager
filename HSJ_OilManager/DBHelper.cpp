@@ -15,7 +15,7 @@ DBHelper::DBHelper(void)
     m_OilDensityMap = new OilDensityMap();
 
     m_OilPriceMap = new OilPriceMap();
-    m_ShipMap = new ShipMap();
+    m_ShipList = new ShipList();
 }
 
 DBHelper::~DBHelper(void)
@@ -55,10 +55,10 @@ DBHelper::~DBHelper(void)
         m_OilDensityMap = NULL;
     }
 
-    if (m_ShipMap)
+    if (m_ShipList)
     {
-        delete m_ShipMap;
-        m_ShipMap = NULL;
+        delete m_ShipList;
+        m_ShipList = NULL;
     }
 }
 
@@ -137,9 +137,9 @@ OilPriceMap* DBHelper::GetOilPriceMap()
     return m_OilPriceMap;
 }
 
-ShipMap* DBHelper::GetShipMap()
+ShipList* DBHelper::GetShipList()
 {
-    return m_ShipMap;
+    return m_ShipList;
 }
 
 bool DBHelper::OpenDB()
@@ -201,7 +201,7 @@ void DBHelper::ReloadShip()
 {
     ReloadCompanyTypeMap();
     ReloadCompanyMap();
-    ReloadShipMap();
+    ReloadShipList();
 }
 
 void DBHelper::ReloadCompanyTypeMap()
@@ -423,7 +423,7 @@ void DBHelper::ReloadOilPriceMap()
     m_pRecordset->Close();
 }
 
-void DBHelper::ReloadShipMap()
+void DBHelper::ReloadShipList()
 {
     
 }
@@ -541,8 +541,8 @@ bool DBHelper::UpdateOilPrice(const OilPriceModal& modal, DB_ACT act)
             commandLine = 
                 CString("INSERT INTO hsj_oil_price (stime, price, OilTypeID) ") + 
                 CString("VALUES ( ") + 
-                CString("'") + modal.GetStime() + "', " + 
-                modal.GetPrice() + ", " +
+                CString("'") + modal.GetStime() + CString("', ") + 
+                modal.GetPrice() + CString(", ") +
                 modal.GetOilTypeID() + CString(" )");
         }
         break;
@@ -560,3 +560,76 @@ bool DBHelper::UpdateOilPrice(const OilPriceModal& modal, DB_ACT act)
     else return false;
 }
 
+bool DBHelper::UpdateCompany(const CompanyModal& modal, DB_ACT act)
+{
+    CString commandLine = STR_EMPTY;
+
+    switch (act)
+    {
+    case DB_ACT_UPDATE:
+        {
+            commandLine = 
+                CString("UPDATE hsj_company ") + 
+                CString("SET ") + 
+                CString("CompanyName = '" ) + modal.GetCompanyName() + CString("', ") +  
+                CString("CompanyTypeID = ") + modal.GetCompanyTypeID() + CString(", ") +
+                CString("CompanyParentID = ") + modal.GetCompanyParentID() + CString(", ") +
+                CString("WHERE ") + 
+                CString("CompanyID = ") + modal.GetCompanyID();
+
+        }
+        break;
+
+    case DB_ACT_ADD:
+        {
+            commandLine = 
+                CString("INSERT INTO hsj_company (CompanyName, CompanyTypeID, CompanyParentID) ") + 
+                CString("VALUES ( ") + 
+                CString("'") + modal.GetCompanyName() + CString("', ") +
+                modal.GetCompanyTypeID() + CString(", ") + 
+                modal.GetCompanyParentID() + CString(" )");
+        }
+        break;
+
+    case DB_ACT_DEL:
+        {
+            commandLine = 
+                CString("DELETE FROM hsj_company WHERE CompanyID = ") + 
+                modal.GetCompanyID();
+        }
+        break;
+    }
+
+    if (commandLine != STR_EMPTY) return UpdateDB((_bstr_t)commandLine);
+    else return false;
+}
+
+
+bool DBHelper::UpdateShipRegInfo(const ShipRegInfoModal& modal, DB_ACT act)
+{
+    CString commandLine = STR_EMPTY;
+
+    switch (act)
+    {
+    case DB_ACT_UPDATE:
+        {
+
+        }
+        break;
+
+    case DB_ACT_ADD:
+        {
+
+        }
+        break;
+
+    case DB_ACT_DEL:
+        {
+
+        }
+        break;
+    }
+
+    if (commandLine != STR_EMPTY) return UpdateDB((_bstr_t)commandLine);
+    else return false;
+}

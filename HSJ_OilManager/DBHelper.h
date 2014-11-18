@@ -23,7 +23,7 @@ typedef CMap<int, int, CompanyModal, CompanyModal> CompanyMap;
 typedef CMap<int, int, OilTypeModal, OilTypeModal> OilTypeMap;
 typedef CMap<int, int, OilDensityModal, OilDensityModal> OilDensityMap;
 typedef CMap<int, int, OilPriceModal, OilPriceModal> OilPriceMap;
-typedef CMap<int, int, ShipRegInfoModal, ShipRegInfoModal> ShipMap;
+
 typedef CList<ShipRegInfoModal, ShipRegInfoModal> ShipList;
 
 class DBHelper
@@ -42,7 +42,7 @@ public:
 
 private:
     DBHelper(void);
-    static DBHelper*    m_pInstance;
+    static DBHelper*        m_pInstance;
 
     // Here we have no stored procedure, 
     // So only use connectionPtr and recordsetPrt 
@@ -56,7 +56,7 @@ private:
     OilDensityMap*          m_OilDensityMap;
 
     OilPriceMap*            m_OilPriceMap;
-    ShipMap*                m_ShipMap;
+    ShipList*               m_ShipList;
 
 public:
     ~DBHelper(void);
@@ -70,7 +70,7 @@ public:
     OilTypeMap*             GetOilTypeMap();
     OilDensityMap*          GetOilDensityMap();
     OilPriceMap*            GetOilPriceMap();
-    ShipMap*                GetShipMap();
+    ShipList*               GetShipList();
 
     bool InitInstance();
     bool OpenDB();
@@ -88,7 +88,7 @@ public:
     void ReloadOilDensityMap();
     void ReloadOilPriceMap();
 
-    void ReloadShipMap();
+    void ReloadShipList();
 
 protected:
     virtual bool SelectDB(const _bstr_t& commandLine);
@@ -97,4 +97,7 @@ protected:
 public:
     bool UpdateOilDensity(const OilDensityModal& modal, DB_ACT act);
     bool UpdateOilPrice(const OilPriceModal& modal, DB_ACT act);
+    bool UpdateCompany(const CompanyModal& modal, DB_ACT act);
+    bool UpdateShipRegInfo(const ShipRegInfoModal& modal, DB_ACT act);
+
 };
