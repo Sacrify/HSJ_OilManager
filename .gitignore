@@ -28,17 +28,3 @@
 *.app
 
 *.ncb
-
-*.htm
-
-HSJ_OilManager/Debug/HSJ_OilManager.res
-
-HSJ_OilManager/Debug/BuildLog.htm
-
-HSJ_OilManager/Debug/mt.dep
-
-HSJ_OilManager/Debug/vc90.idb
-
-HSJ_OilManager/Debug/vc90.pdb
-
-HSJ_OilManager/HSJ_OilManager.aps
