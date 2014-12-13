@@ -64,3 +64,40 @@ CTime Utils::Variant2CTimeDay(_variant_t& vt)
     VariantTimeToSystemTime(timeTmp, &st);
     return CTime(st);
 }
+
+CString Utils::GetConnectionString()
+{
+	CString retStr = _T("");
+	CString iniFile = AfxGetApp()->m_pszProfileName;
+
+    TCHAR szSection[1025] = {0};
+    DWORD dwSection = GetPrivateProfileString(NULL, NULL, NULL, szSection, 1024, iniFile);
+
+    LPTSTR lpSection = szSection;
+    while(*lpSection)
+    {
+		if (CString(lpSection).CompareNoCase(CString(_T("ConnectionInfo"))) == 0)
+		{
+			TCHAR szEntry[1025]={0};
+			DWORD dwEntry = GetPrivateProfileString(lpSection, NULL, NULL, szEntry, 1024, iniFile);
+			LPTSTR lpEntry = szEntry;
+
+			while(*lpEntry)
+			{
+				TCHAR szVal[1204]={0};
+				DWORD dwVal = GetPrivateProfileString(lpSection, lpEntry, NULL, szVal, 1024, iniFile);
+
+				retStr += lpEntry;
+				retStr += _T("=");
+				retStr += szVal;
+				retStr += _T(";");
+
+				lpEntry += _tcslen(lpEntry) + 1;
+			}
+		}
+
+		lpSection += _tcslen(lpSection) + 1;
+	}
+
+	return retStr;
+}

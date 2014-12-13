@@ -58,6 +58,23 @@ BOOL CHSJ_OilManagerApp::InitInstance()
     // 例如修改为公司或组织名
     SetRegistryKey(_T("长江海事局"));
 
+	TCHAR szExePath[MAX_PATH + 1] = {0};
+	GetModuleFileName(NULL, szExePath, MAX_PATH);
+
+	CString szINIFile = szExePath;
+	szINIFile.Replace(_T(".exe"), _T(".ini")); 
+
+	if (szINIFile.IsEmpty() == false)
+	{
+		//First free the string allocated by MFC at CWinApp startup. 
+		//The string is allocated before InitInstance is called.
+		free((void*)m_pszProfileName);
+
+		//Change the name of the .INI file. 
+		//The CWinApp destructor will free the memory.
+		m_pszProfileName = _tcsdup(szINIFile);
+	}
+
     CHSJ_OilManagerDlg dlg;
     m_pMainWnd = &dlg;
     INT_PTR nResponse = dlg.DoModal();

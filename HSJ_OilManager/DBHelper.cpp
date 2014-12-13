@@ -150,11 +150,17 @@ bool DBHelper::OpenDB()
         {
             try
             {
+				CString connStr = Utils::GetConnectionString();
+				if (connStr.IsEmpty())
+				{
+					connStr = _T("Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=OilDB;Data Source=.");
+				}
+
                 return 
                     (SUCCEEDED(
                     m_pConnection->Open(
-                    "Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=OilDB;Data Source=.",
-                    "",
+                    (_bstr_t)connStr,
+					"",
                     "",
                     adModeUnknown)));///连接数据库
             }

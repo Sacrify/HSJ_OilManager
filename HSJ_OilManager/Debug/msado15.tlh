@@ -1,9 +1,9 @@
-﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.21022.08 (bccde99d).
+﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.21022.08 (b7b8986b).
 //
-// c:\users\wang peng\documents\visual studio 2008\projects\mfc\hsj_oilmanager\hsj_oilmanager\debug\msado15.tlh
+// c:\users\wang peng\documents\visual studio 2008\projects\hsj_oilmanager\hsj_oilmanager\debug\msado15.tlh
 //
 // C++ source equivalent of Win32 type library C:\Program Files\Common Files\System\ado\msado15.dll
-// compiler-generated file created 11/09/14 at 14:54:45 - DO NOT EDIT!
+// compiler-generated file created 12/07/14 at 19:39:36 - DO NOT EDIT!
 
 #pragma once
 #pragma pack(push, 8)
@@ -5071,6 +5071,6 @@ _Record_Deprecated : _ADO
 // Wrapper method implementations
 //
 
-#include "c:\users\wang peng\documents\visual studio 2008\projects\mfc\hsj_oilmanager\hsj_oilmanager\debug\msado15.tli"
+#include "c:\users\wang peng\documents\visual studio 2008\projects\hsj_oilmanager\hsj_oilmanager\debug\msado15.tli"
 
 #pragma pack(pop)

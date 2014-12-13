@@ -17,6 +17,8 @@ public:
     static CString CTime2CStringDay(CTime time);
     static CTime CString2CTimeDay(CString& str);
     static CTime Variant2CTimeDay(_variant_t& vt);
+
+	static CString GetConnectionString();
 };
 
 
